@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#176b4d">
+<title>AfyaPlate — Eat Well. Spend Wisely.</title>
+<style>
+:root{--green:#176b4d;--green2:#e7f4ed;--lime:#c9e8a4;--ink:#18251f;--muted:#66756d;--cream:#f7faf7;--line:#e3ebe5;--white:#fff;--orange:#f3a64a;--shadow:0 12px 35px rgba(23,70,48,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}
+header{background:linear-gradient(120deg,#124c38,#207956);color:white;padding:18px 18px 30px}
+.nav{max-width:1050px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:850;font-size:1.2rem;letter-spacing:-.4px}.logo{width:38px;height:38px;border-radius:13px;background:#d8efc4;color:#15533d;display:grid;place-items:center;font-size:22px}
+.nav small{opacity:.8}.hero{max-width:1050px;margin:32px auto 0;display:grid;grid-template-columns:1.2fr .8fr;gap:25px;align-items:center}
+.eyebrow{font-size:.76rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#d1efbc}
+h1{font-size:clamp(2.2rem,6vw,4rem);line-height:1.03;letter-spacing:-2px;margin:10px 0 14px}.hero p{color:#e0eee7;max-width:580px;margin:0 0 20px}
+.hero-art{background:linear-gradient(145deg,#e6f2dd,#b9d8b8);border-radius:28px;padding:22px;text-align:center;color:#194d37;min-height:190px;display:flex;flex-direction:column;justify-content:center;box-shadow:0 15px 40px #0c3b2b44}
+.plate{font-size:75px;line-height:1.1}.hero-art strong{font-size:1.15rem}.hero-art span{font-size:.85rem;color:#446c54}
+main{max-width:1050px;margin:-8px auto 50px;padding:0 16px}
+.card{background:white;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow);margin-bottom:17px}
+.section-title{display:flex;align-items:center;gap:10px;margin:0 0 5px;font-size:1.25rem}.sub{color:var(--muted);font-size:.9rem;margin:0 0 18px}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+label{display:block;font-size:.88rem;font-weight:700;margin-bottom:6px}
+input,select{width:100%;border:1px solid #d7e2da;border-radius:12px;padding:13px 12px;font:inherit;background:white;color:var(--ink);outline:none}
+input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px #176b4d18}
+.mealchecks{display:flex;flex-wrap:wrap;gap:9px}.chip{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:9px 12px;font-size:.9rem;background:#fff}.chip input{width:auto;accent-color:var(--green)}
+.btn{border:0;border-radius:13px;background:var(--green);color:white;padding:13px 18px;font-weight:800;font-size:.96rem;cursor:pointer}.btn:active{transform:scale(.99)}.btn.secondary{background:var(--green2);color:var(--green)}.btn.full{width:100%;margin-top:16px}
+.note{background:#fff8e9;border:1px solid #f4dfb7;border-radius:12px;padding:11px 13px;font-size:.83rem;color:#6e542c;margin-top:13px}
+.results{display:none}.results.show{display:block}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}.stat{background:var(--green2);border-radius:14px;padding:12px}.stat span{display:block;font-size:.75rem;color:var(--muted)}.stat strong{font-size:1.1rem;color:var(--green)}
+.mealgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.meal{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff}.meal .emoji{font-size:30px}.meal h3{font-size:1rem;margin:6px 0}.meal p{font-size:.85rem;color:var(--muted);margin:6px 0}.tag{display:inline-block;background:#f1f6f1;color:#3c674e;border-radius:30px;padding:4px 8px;font-size:.72rem;font-weight:700;margin:3px 3px 0 0}
+.shopping{columns:2;column-gap:25px;padding-left:20px}.shopping li{break-inside:avoid;margin:6px 0;font-size:.9rem}
+footer{max-width:1050px;margin:0 auto 30px;padding:0 16px;color:var(--muted);font-size:.8rem;text-align:center}
+.smallbtn{border:1px solid var(--line);background:white;border-radius:10px;padding:9px 12px;font-weight:700;color:var(--green);cursor:pointer}
+@media(max-width:700px){.hero{grid-template-columns:1fr;margin-top:24px}.hero-art{min-height:145px}.plate{font-size:55px}.formgrid{grid-template-columns:1fr}.mealgrid{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr 1fr}.card{padding:16px}h1{letter-spacing:-1.2px}.shopping{columns:1}}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav"><div class="brand"><div class="logo">🥑</div>AfyaPlate</div><small>KENYAN MEAL PLANNER · BETA</small></div>
+  <div class="hero">
+    <div><div class="eyebrow">Eat well. Spend wisely.</div><h1>Good food.<br>Smarter days.</h1>
+    <p>Build a practical breakfast, lunch and supper plan around your food budget, household size and preferences.</p>
+    <a href="#planner"><button class="btn" style="background:#d8efc4;color:#164b37">Plan my meals ↓</button></a></div>
+    <div class="hero-art"><div class="plate">🥗 🍲 🥑</div><strong>Local foods. Balanced choices.</strong><span>Simple ideas for everyday Kenyan meals.</span></div>
+  </div>
+</header>
+<main>
+  <section class="card" id="planner">
+    <h2 class="section-title">🍽️ Build your meal plan</h2>
+    <p class="sub">Tell us what works for your household. Prices are estimates and vary by location and season.</p>
+    <div class="formgrid">
+      <div><label for="budget">Daily food budget (KSh)</label><input id="budget" type="number" min="50" step="10" value="300"></div>
+      <div><label for="people">Number of people</label><select id="people"><option value="1">1 person</option><option value="2">2 people</option><option value="3">3 people</option><option value="4">4 people</option><option value="5">5 people</option><option value="6">6 or more</option></select></div>
+      <div><label for="preference">Food preference</label><select id="preference"><option value="any">No special preference</option><option value="vegetarian">Vegetarian (no meat or fish)</option><option value="no_beef">No beef</option><option value="high_protein">Prefer protein-rich options</option></select></div>
+      <div><label for="region">Shopping location</label><select id="region"><option value="town">Town / supermarket prices</option><option value="market">Open-air market / local prices</option><option value="rural">Rural / home-grown foods where available</option></select></div>
+    </div>
+    <div style="margin-top:16px"><label>Which meals should we plan?</label>
+      <div class="mealchecks">
+        <label class="chip"><input type="checkbox" class="mealcheck" value="breakfast" checked> Breakfast</label>
+        <label class="chip"><input type="checkbox" class="mealcheck" value="lunch" checked> Lunch</label>
+        <label class="chip"><input type="checkbox" class="mealcheck" value="supper" checked> Supper</label>
+      </div>
+    </div>
+    <button class="btn full" id="generate">✨ Generate my meal plan</button>
+    <div class="note">AfyaPlate is an early-stage planning tool, not a medical service. Tell a qualified health professional about allergies, medical conditions, pregnancy or special nutrition needs before relying on a diet plan.</div>
+  </section>
+
+  <section class="card results" id="results" aria-live="polite">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+      <div><h2 class="section-title">Your AfyaPlate plan</h2><p class="sub" style="margin:3px 0 0">A practical starting point for today.</p></div>
+      <button class="smallbtn" id="save">Save plan on this phone</button>
+    </div>
+    <div class="summary">
+      <div class="stat"><span>Estimated total</span><strong id="total">KSh 0</strong></div>
+      <div class="stat"><span>Daily budget</span><strong id="budgetOut">KSh 0</strong></div>
+      <div class="stat"><span>Household</span><strong id="peopleOut">1 person</strong></div>
+    </div>
+    <div class="mealgrid" id="mealgrid"></div>
+    <div style="margin-top:20px"><h3 class="section-title">🛒 Shopping list</h3><p class="sub">Combined ingredients for the meals selected.</p><ul class="shopping" id="shopping"></ul></div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:16px">
+      <button class="btn secondary" id="copy">Copy meal plan</button>
+      <button class="btn secondary" onclick="window.print()">Print / save as PDF</button>
+      <button class="smallbtn" id="again">Try another plan</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">🌿 What makes a balanced plate?</h2>
+    <p class="sub">Use variety across the day. A helpful general guide for many healthy adults is:</p>
+    <div class="mealgrid">
+      <div class="meal"><div class="emoji">🥬</div><h3>Vegetables & fruit</h3><p>Include different-coloured vegetables and fruit regularly.</p></div>
+      <div class="meal"><div class="emoji">🌽</div><h3>Energy foods</h3><p>Choose staples such as ugali, rice, potatoes, matoke or whole grains.</p></div>
+      <div class="meal"><div class="emoji">🥚</div><h3>Protein foods</h3><p>Vary beans, ndengu, eggs, milk, fish, chicken or other available options.</p></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2 class="section-title">About AfyaPlate</h2>
+    <p class="sub" style="margin-bottom:0">AfyaPlate is a prototype designed to make everyday meal decisions easier for people in Kenya. This first version uses a small built-in collection of meal ideas and indicative cost estimates. It does not yet use live market prices, a nutrition database, user accounts or online payments.</p>
+  </section>
+</main>
+<footer>© <span id="year"></span> AfyaPlate · Prototype beta · Prices are illustrative, not market quotations.</footer>
+<script>
+const meals = {
+ breakfast:[
+  {name:"Sweet potatoes, egg & banana",emoji:"🍠",cost:85,items:["Sweet potatoes","Eggs","Banana"],parts:["Energy: sweet potatoes","Protein: egg","Fruit: banana"],why:"Combines a filling staple with protein and fruit."},
+  {name:"Porridge, groundnuts & pawpaw",emoji:"🥣",cost:70,items:["Uji flour","Groundnuts","Pawpaw"],parts:["Energy: porridge","Protein/fat: groundnuts","Fruit: pawpaw"],why:"A simple breakfast with grain, nuts and fruit."},
+  {name:"Wholemeal bread, beans & orange",emoji:"🍞",cost:90,items:["Wholemeal bread","Cooked beans","Orange"],parts:["Energy: bread","Protein/fibre: beans","Fruit: orange"],why:"Adds beans to a familiar breakfast for more protein and fibre."},
+  {name:"Boiled arrowroots & milk",emoji:"🥛",cost:80,items:["Arrowroots","Milk","Seasonal fruit"],parts:["Energy: arrowroots","Protein/calcium: milk","Fruit: seasonal fruit"],why:"A simple combination of a staple, dairy and fruit."}
+ ],
+ lunch:[
+  {name:"Ugali, beans & sukuma wiki",emoji:"🍲",cost:125,items:["Maize flour","Beans","Sukuma wiki","Tomato","Onion"],parts:["Energy: ugali","Protein/fibre: beans","Vegetables: sukuma wiki"],why:"A familiar Kenyan combination with a staple, legumes and vegetables."},
+  {name:"Rice, ndengu & cabbage",emoji:"🍚",cost:135,items:["Rice","Ndengu","Cabbage","Tomato","Onion"],parts:["Energy: rice","Protein/fibre: ndengu","Vegetables: cabbage"],why:"Combines rice and green grams with vegetables."},
+  {name:"Githeri & avocado",emoji:"🥑",cost:130,items:["Maize","Beans","Tomato","Onion","Avocado"],parts:["Energy: maize","Protein/fibre: beans","Healthy fats: avocado"],why:"A one-pot staple and legume meal; add vegetables when available."},
+  {name:"Matoke, beans & spinach",emoji:"🍌",cost:145,items:["Green bananas","Beans","Spinach","Tomato","Onion"],parts:["Energy: matoke","Protein/fibre: beans","Vegetables: spinach"],why:"A varied plate using locally available staples and greens."}
+ ],
+ supper:[
+  {name:"Sweet potato, ndengu & greens",emoji:"🥬",cost:120,items:["Sweet potatoes","Ndengu","Spinach","Tomato","Onion"],parts:["Energy: sweet potatoes","Protein/fibre: ndengu","Vegetables: spinach"],why:"A filling supper with legumes and vegetables."},
+  {name:"Rice, egg & mixed vegetables",emoji:"🍛",cost:130,items:["Rice","Eggs","Carrots","Cabbage","Tomato"],parts:["Energy: rice","Protein: eggs","Vegetables: carrots and cabbage"],why:"A simple meal that includes vegetables and an egg protein source."},
+  {name:"Ugali, omena & sukuma wiki",emoji:"🐟",cost:145,items:["Maize flour","Omena","Sukuma wiki","Tomato","Onion"],parts:["Energy: ugali","Protein: omena","Vegetables: sukuma wiki"],why:"A traditional option with small fish and leafy greens."},
+  {name:"Chapati, lentils & kachumbari",emoji:"🥗",cost:150,items:["Chapati","Lentils","Tomato","Onion","Coriander"],parts:["Energy: chapati","Protein/fibre: lentils","Vegetables: kachumbari"],why:"Pairs a staple with legumes and a fresh vegetable side."}
+ ]
+};
+let currentText="";
+function choose(arr,offset){return arr[offset%arr.length]}
+function generate(){
+ const budget=Math.max(50,Number(document.getElementById('budget').value)||300);
+ const people=Number(document.getElementById('people').value)||1;
+ const pref=document.getElementById('preference').value;
+ const region=document.getElementById('region').value;
+ const selected=[...document.querySelectorAll('.mealcheck:checked')].map(x=>x.value);
+ if(!selected.length){alert("Please select at least one meal.");return}
+ let factor=people;
+ let priceFactor=region==="town"?1.15:region==="rural"?.9:1;
+ let plan=[];
+ selected.forEach((type,i)=>{
+   let arr=meals[type].filter(m=>{
+    if(pref==="vegetarian") return !m.items.some(x=>["Omena"].includes(x));
+    if(pref==="no_beef") return true;
+    if(pref==="high_protein") return m.items.some(x=>["Beans","Ndengu","Eggs","Lentils","Omena"].includes(x));
+    return true;
+   });
+   if(!arr.length)arr=meals[type];
+   plan.push({type,...choose(arr,Math.floor(Math.random()*arr.length))});
+ });
+ let total=Math.round(plan.reduce((s,m)=>s+m.cost,0)*factor*priceFactor);
+ // A transparent budget warning; don't pretend the same menu automatically fits.
+ document.getElementById('total').textContent="KSh "+total.toLocaleString('en-KE');
+ document.getElementById('budgetOut').textContent="KSh "+budget.toLocaleString('en-KE');
+ document.getElementById('peopleOut').textContent=people===6?"6+ people":people+(people===1?" person":" people");
+ const names={breakfast:"Breakfast",lunch:"Lunch",supper:"Supper"};
+ document.getElementById('mealgrid').innerHTML=plan.map(m=>`<article class="meal"><div class="emoji">${m.emoji}</div><span class="tag">${names[m.type]}</span><h3>${m.name}</h3><p>${m.why}</p><p><b>Estimated cost:</b> KSh ${Math.round(m.cost*factor*priceFactor).toLocaleString('en-KE')}</p><div>${m.parts.map(p=>`<span class="tag">${p}</span>`).join('')}</div></article>`).join('');
+ let list=[...new Set(plan.flatMap(m=>m.items))];
+ document.getElementById('shopping').innerHTML=list.map(x=>`<li>${x}</li>`).join('');
+ let warning=total>budget?`The selected meal ideas are estimated above your budget by KSh ${total-budget}. Try increasing the budget, choosing fewer meals, or swapping ingredients for lower-cost local alternatives.`:"The estimate is within the budget entered. Check local prices and portion needs before shopping.";
+ document.getElementById('shopping').insertAdjacentHTML('afterend',`<p class="note" id="budgetNote">${warning}</p>`);
+ currentText="AfyaPlate meal plan\n"+plan.map(m=>names[m.type]+": "+m.name+" — KSh "+Math.round(m.cost*factor*priceFactor)+"\n"+m.why).join("\n")+"\nEstimated total: KSh "+total+"\nShopping list: "+list.join(", ")+"\nEstimate only; confirm local prices.";
+ document.getElementById('results').classList.add('show');
+ document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+document.getElementById('generate').addEventListener('click',generate);
+document.getElementById('again').addEventListener('click',()=>{document.getElementById('budgetNote')?.remove();generate()});
+document.getElementById('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(currentText);alert("Meal plan copied.");}catch(e){alert(currentText)}});
+document.getElementById('save').addEventListener('click',()=>{try{localStorage.setItem('afyaplate_saved_plan',currentText);alert("Saved on this phone in this browser.");}catch(e){alert("Your browser could not save this plan.")}});
+document.getElementById('year').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
