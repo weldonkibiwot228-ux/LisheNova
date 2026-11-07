@@ -90,6 +90,68 @@ main{margin:8px auto 50px}
  main{margin:22px auto 45px;padding:0 14px}
 }
 
+
+/* Meal planner section — refreshed visual design */
+#planner{
+  position:relative;overflow:hidden;
+  padding:clamp(20px,4vw,38px);
+  border:1px solid #e1eadf;
+  background:linear-gradient(145deg,#ffffff 0%,#f4f8ef 100%);
+  box-shadow:0 20px 48px rgba(23,75,49,.09);
+}
+#planner:before{
+  content:"";position:absolute;right:-75px;top:-95px;width:220px;height:220px;
+  border-radius:50%;background:radial-gradient(circle,#e4f0d6 0%,#e4f0d6 54%,transparent 56%);
+  pointer-events:none;opacity:.8
+}
+#planner .section-title{position:relative;font-size:clamp(1.55rem,3vw,2rem);letter-spacing:-.6px;margin:0 0 8px;color:#174e38}
+#planner>.sub{position:relative;color:#687c70;max-width:660px;line-height:1.65;margin:0 0 25px}
+#planner .formgrid{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#planner .formgrid>div{
+  padding:15px;border:1px solid #e2eae0;border-radius:16px;background:rgba(255,255,255,.88);
+  box-shadow:0 5px 16px rgba(24,69,46,.035)
+}
+#planner label{display:block;color:#315b43;font-weight:800;font-size:.87rem;margin-bottom:8px}
+#planner input:not([type=checkbox]),#planner select{
+  width:100%;min-height:48px;border:1px solid #dbe6da;border-radius:11px;
+  padding:11px 13px;background:#fbfdf9;color:#203c2d;font:inherit;outline:none
+}
+#planner input:focus,#planner select:focus{border-color:#4d956a;box-shadow:0 0 0 3px #4d956a22}
+#planner>div[style*="margin-top:16px"]{position:relative;margin-top:22px!important}
+#planner>div[style*="margin-top:16px"]>label{font-size:.95rem;margin-bottom:11px}
+#planner .mealchecks{display:flex;flex-wrap:wrap;gap:10px}
+#planner .chip{
+  display:flex;align-items:center;gap:9px;margin:0;padding:12px 16px;
+  background:#fff;border:1px solid #dfe9dd;border-radius:999px;
+  color:#315b43;font-size:.9rem;font-weight:750
+}
+#planner .chip:has(input:checked){background:#e9f4e5;border-color:#9cbe91;color:#1b6545}
+#planner .chip input{width:17px;height:17px;accent-color:#176447;margin:0}
+#planner #generate{
+  position:relative;width:100%;min-height:58px;margin-top:24px;border:0;border-radius:15px;
+  background:linear-gradient(110deg,#176447,#267b55);color:white;font-size:1rem;font-weight:850;
+  box-shadow:0 10px 22px rgba(23,100,71,.19);transition:transform .18s,box-shadow .18s
+}
+#planner #generate:active{transform:translateY(1px);box-shadow:0 5px 12px rgba(23,100,71,.15)}
+#planner .note{
+  margin-top:17px;padding:13px 15px;border-radius:12px;background:#f0f5e9;
+  border-left:3px solid #9bbd7c;color:#697b6d;font-size:.78rem;line-height:1.6
+}
+#results{border:1px solid #e1eadf;background:#fff;padding:clamp(18px,3vw,30px);box-shadow:0 14px 38px rgba(23,75,49,.065)}
+#results .section-title{color:#205c42}
+#results .summary{gap:12px}
+#results .stat{border:1px solid #e3ecdf;border-radius:15px;background:#f5f8f0;padding:15px}
+#results .stat span{color:#6c7e70}
+#results .stat strong{color:#185b3f}
+@media(max-width:600px){
+ #planner{padding:21px 16px;border-radius:20px}
+ #planner .formgrid{grid-template-columns:1fr;gap:11px}
+ #planner .formgrid>div{padding:13px}
+ #planner .chip{padding:10px 13px;font-size:.84rem}
+ #planner #generate{margin-top:20px}
+ #results{padding:18px 15px}
+}
+
 </style>
 </head>
 <body>
