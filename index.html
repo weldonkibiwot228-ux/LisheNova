@@ -9,13 +9,13 @@
 :root{--green:#176b4d;--green2:#e7f4ed;--lime:#c9e8a4;--ink:#18251f;--muted:#66756d;--cream:#f7faf7;--line:#e3ebe5;--white:#fff;--orange:#f3a64a;--shadow:0 12px 35px rgba(23,70,48,.08)}
 *{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}
 header{background:linear-gradient(120deg,#124c38,#207956);color:white;padding:18px 18px 30px}
-.nav{max-width:1050px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav{max-width:1050px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}.navlinks{display:flex;align-items:center;gap:18px}.navlinks a{color:#e5f3eb;text-decoration:none;font-size:.86rem;font-weight:700}.navlinks a:hover{color:#d8efc4}
 .brand{display:flex;align-items:center;gap:10px;font-weight:850;font-size:1.2rem;letter-spacing:-.4px}.logo{width:38px;height:38px;border-radius:13px;background:#d8efc4;color:#15533d;display:grid;place-items:center;font-size:22px}
 .nav small{opacity:.8}.hero{max-width:1050px;margin:32px auto 0;display:grid;grid-template-columns:1.2fr .8fr;gap:25px;align-items:center}
 .eyebrow{font-size:.76rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#d1efbc}
 h1{font-size:clamp(2.2rem,6vw,4rem);line-height:1.03;letter-spacing:-2px;margin:10px 0 14px}.hero p{color:#e0eee7;max-width:580px;margin:0 0 20px}
 .hero-art{background:linear-gradient(145deg,#e6f2dd,#b9d8b8);border-radius:28px;padding:22px;text-align:center;color:#194d37;min-height:190px;display:flex;flex-direction:column;justify-content:center;box-shadow:0 15px 40px #0c3b2b44}
-.plate{font-size:75px;line-height:1.1}.hero-art strong{font-size:1.15rem}.hero-art span{font-size:.85rem;color:#446c54}
+.plate{font-size:75px;line-height:1.1}.hero-art strong{font-size:1.15rem}.hero-art span{font-size:.85rem;color:#446c54}.hero-art{position:relative;overflow:hidden}.hero-art:after{content:"";position:absolute;width:150px;height:150px;border:1px solid #ffffff88;border-radius:50%;right:-55px;top:-55px}.feature-strip{max-width:1050px;margin:-1px auto 0;padding:0 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.feature{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:var(--shadow)}.feature b{display:block;color:var(--green);font-size:.93rem}.feature span{display:block;color:var(--muted);font-size:.8rem;margin-top:3px}.btn:hover{filter:brightness(1.07);box-shadow:0 7px 18px #0b382522}
 main{max-width:1050px;margin:-8px auto 50px;padding:0 16px}
 .card{background:white;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow);margin-bottom:17px}
 .section-title{display:flex;align-items:center;gap:10px;margin:0 0 5px;font-size:1.25rem}.sub{color:var(--muted);font-size:.9rem;margin:0 0 18px}
@@ -32,19 +32,20 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px #176b4d1
 .shopping{columns:2;column-gap:25px;padding-left:20px}.shopping li{break-inside:avoid;margin:6px 0;font-size:.9rem}
 footer{max-width:1050px;margin:0 auto 30px;padding:0 16px;color:var(--muted);font-size:.8rem;text-align:center}
 .smallbtn{border:1px solid var(--line);background:white;border-radius:10px;padding:9px 12px;font-weight:700;color:var(--green);cursor:pointer}
-@media(max-width:700px){.hero{grid-template-columns:1fr;margin-top:24px}.hero-art{min-height:145px}.plate{font-size:55px}.formgrid{grid-template-columns:1fr}.mealgrid{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr 1fr}.card{padding:16px}h1{letter-spacing:-1.2px}.shopping{columns:1}}
+@media(max-width:700px){.navlinks{display:none}.feature-strip{grid-template-columns:1fr;gap:8px}.feature{padding:12px}.hero{grid-template-columns:1fr;margin-top:24px}.hero-art{min-height:145px}.plate{font-size:55px}.formgrid{grid-template-columns:1fr}.mealgrid{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr 1fr}.card{padding:16px}h1{letter-spacing:-1.2px}.shopping{columns:1}}
 </style>
 </head>
 <body>
 <header>
-  <div class="nav"><div class="brand"><div class="logo">🥑</div>AfyaPlate</div><small>KENYAN MEAL PLANNER · BETA</small></div>
+  <div class="nav"><div class="brand"><div class="logo">🥑</div>AfyaPlate</div><div class="navlinks"><a href="#planner">Meal planner</a><a href="#benefits">Why AfyaPlate</a><a href="#about">About</a></div><small>KENYAN MEAL PLANNER · BETA</small></div>
   <div class="hero">
-    <div><div class="eyebrow">Eat well. Spend wisely.</div><h1>Good food.<br>Smarter days.</h1>
-    <p>Build a practical breakfast, lunch and supper plan around your food budget, household size and preferences.</p>
+    <div><div class="eyebrow">YOUR EVERYDAY KENYAN MEAL COMPANION</div><h1>Eat well.<br>Spend wisely.</h1>
+    <p>Take the stress out of deciding what to cook. Get simple Kenyan meal ideas, plan around your budget and create a shopping list for your household.</p>
     <a href="#planner"><button class="btn" style="background:#d8efc4;color:#164b37">Plan my meals ↓</button></a></div>
     <div class="hero-art"><div class="plate">🥗 🍲 🥑</div><strong>Local foods. Balanced choices.</strong><span>Simple ideas for everyday Kenyan meals.</span></div>
   </div>
 </header>
+<section class="feature-strip" id="benefits"><div class="feature"><b>💸 Plan around your budget</b><span>Choose a daily amount that works for your home.</span></div><div class="feature"><b>🥘 Local meal inspiration</b><span>Explore familiar foods and practical combinations.</span></div><div class="feature"><b>🛒 Shop with a list</b><span>Bring your ingredients together in one place.</span></div></section>
 <main>
   <section class="card" id="planner">
     <h2 class="section-title">🍽️ Build your meal plan</h2>
@@ -94,7 +95,7 @@ footer{max-width:1050px;margin:0 auto 30px;padding:0 16px;color:var(--muted);fon
       <div class="meal"><div class="emoji">🥚</div><h3>Protein foods</h3><p>Vary beans, ndengu, eggs, milk, fish, chicken or other available options.</p></div>
     </div>
   </section>
-  <section class="card">
+  <section class="card" id="about">
     <h2 class="section-title">About AfyaPlate</h2>
     <p class="sub" style="margin-bottom:0">AfyaPlate is a prototype designed to make everyday meal decisions easier for people in Kenya. This first version uses a small built-in collection of meal ideas and indicative cost estimates. It does not yet use live market prices, a nutrition database, user accounts or online payments.</p>
   </section>
