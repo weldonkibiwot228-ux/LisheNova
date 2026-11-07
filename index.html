@@ -29,7 +29,16 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px #176b4d1
 .results{display:none}.results.show{display:block}
 .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}.stat{background:var(--green2);border-radius:14px;padding:12px}.stat span{display:block;font-size:.75rem;color:var(--muted)}.stat strong{font-size:1.1rem;color:var(--green)}
 .mealgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.meal{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff}.meal .emoji{font-size:30px}.meal h3{font-size:1rem;margin:6px 0}.meal p{font-size:.85rem;color:var(--muted);margin:6px 0}.tag{display:inline-block;background:#f1f6f1;color:#3c674e;border-radius:30px;padding:4px 8px;font-size:.72rem;font-weight:700;margin:3px 3px 0 0}
-.shopping{columns:2;column-gap:25px;padding-left:20px}.shopping li{break-inside:avoid;margin:6px 0;font-size:.9rem}
+.shopping{list-style:none;padding:0;margin:12px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.shopping li{break-inside:avoid;margin:0;padding:11px 12px;border:1px solid var(--line);border-radius:13px;background:#fbfdf9;display:flex;align-items:center;gap:9px;min-width:0}
+.shopping li.is-checked{background:#eff6ec;opacity:.72}
+.shopping li.is-checked .shopping-name{text-decoration:line-through;color:var(--muted)}
+.shopping-check{width:19px;height:19px;flex:0 0 19px;accent-color:var(--green)}
+.shopping-name{font-size:.88rem;font-weight:650;flex:1;min-width:0}
+.shopping-qty{width:92px;min-width:0;padding:7px 8px;border:1px solid #dce6dc;border-radius:9px;font:inherit;font-size:.76rem;background:white}
+.shopping-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:10px 0 4px}
+.shopping-count{font-size:.8rem;color:var(--muted);font-weight:700}
+@media(max-width:600px){.shopping{grid-template-columns:1fr}.shopping-qty{width:105px}}
 footer{max-width:1050px;margin:0 auto 30px;padding:0 16px;color:var(--muted);font-size:.8rem;text-align:center}
 .smallbtn{border:1px solid var(--line);background:white;border-radius:10px;padding:9px 12px;font-weight:700;color:var(--green);cursor:pointer}
 @media(max-width:700px){.navlinks{display:none}.feature-strip{grid-template-columns:1fr;gap:8px}.feature{padding:12px}.hero{grid-template-columns:1fr;margin-top:24px}.hero-art{min-height:145px}.plate{font-size:55px}.formgrid{grid-template-columns:1fr}.mealgrid{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr 1fr}.card{padding:16px}h1{letter-spacing:-1.2px}.shopping{columns:1}}
@@ -216,7 +225,7 @@ main{margin:8px auto 50px}
       <div class="stat"><span>Household</span><strong id="peopleOut">1 person</strong></div>
     </div>
     <div class="mealgrid" id="mealgrid"></div>
-    <div style="margin-top:20px"><h3 class="section-title">🛒 Shopping list</h3><p class="sub">Combined ingredients for the meals selected.</p><ul class="shopping" id="shopping"></ul></div>
+    <div style="margin-top:20px"><h3 class="section-title">🛒 Shopping list</h3><p class="sub">Tick items as you shop. Add your own quantities before copying or sharing.</p><div class="shopping-tools"><span class="shopping-count" id="shoppingCount" aria-live="polite">0 of 0 items collected</span><button class="smallbtn" id="copyShopping">Copy shopping list</button></div><ul class="shopping" id="shopping"></ul><p class="note" style="margin-top:10px">Quantity boxes are optional because AfyaPlate does not yet store exact recipe measurements. Enter the amounts that suit your household.</p></div>
     <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:16px">
       <button class="btn secondary" id="copy">Copy meal plan</button>
       <button class="btn secondary" onclick="window.print()">Print / save as PDF</button>
@@ -290,16 +299,38 @@ function generate(){
  const names={breakfast:"Breakfast",lunch:"Lunch",supper:"Supper"};
  document.getElementById('mealgrid').innerHTML=plan.map(m=>`<article class="meal"><div class="emoji">${m.emoji}</div><span class="tag">${names[m.type]}</span><h3>${m.name}</h3><p>${m.why}</p><p><b>Estimated cost:</b> KSh ${Math.round(m.cost*factor*priceFactor).toLocaleString('en-KE')}</p><div>${m.parts.map(p=>`<span class="tag">${p}</span>`).join('')}</div></article>`).join('');
  let list=[...new Set(plan.flatMap(m=>m.items))];
- document.getElementById('shopping').innerHTML=list.map(x=>`<li>${x}</li>`).join('');
+ document.getElementById('shopping').innerHTML=list.map((x,i)=>`<li><input class="shopping-check" type="checkbox" id="shop-${i}" aria-label="Mark ${x} as collected"><span class="shopping-name">${x}</span><input class="shopping-qty" type="text" inputmode="text" aria-label="Quantity for ${x}" placeholder="Qty (optional)"></li>`).join('');
+ const shopping=document.getElementById('shopping');
+ const updateShoppingCount=()=>{
+   const checks=[...shopping.querySelectorAll('.shopping-check')];
+   const done=checks.filter(x=>x.checked).length;
+   document.getElementById('shoppingCount').textContent=done+' of '+checks.length+' items collected';
+   checks.forEach(x=>x.closest('li').classList.toggle('is-checked',x.checked));
+ };
+ shopping.addEventListener('change',updateShoppingCount);
+ updateShoppingCount();
  let warning=total>budget?`The selected meal ideas are estimated above your budget by KSh ${total-budget}. Try increasing the budget, choosing fewer meals, or swapping ingredients for lower-cost local alternatives.`:"The estimate is within the budget entered. Check local prices and portion needs before shopping.";
+ document.getElementById('budgetNote')?.remove();
  document.getElementById('shopping').insertAdjacentHTML('afterend',`<p class="note" id="budgetNote">${warning}</p>`);
- currentText="AfyaPlate meal plan\n"+plan.map(m=>names[m.type]+": "+m.name+" — KSh "+Math.round(m.cost*factor*priceFactor)+"\n"+m.why).join("\n")+"\nEstimated total: KSh "+total+"\nShopping list: "+list.join(", ")+"\nEstimate only; confirm local prices.";
+ currentText="AfyaPlate meal plan\n"+plan.map(m=>names[m.type]+": "+m.name+" — KSh "+Math.round(m.cost*factor*priceFactor)+"\n"+m.why).join("\n")+"\nEstimated total: KSh "+total+"\nShopping list:\n"+list.map(x=>"- "+x).join("\n")+"\nEstimate only; confirm local prices.";
  document.getElementById('results').classList.add('show');
  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
 document.getElementById('generate').addEventListener('click',generate);
 document.getElementById('again').addEventListener('click',()=>{document.getElementById('budgetNote')?.remove();generate()});
 document.getElementById('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(currentText);alert("Meal plan copied.");}catch(e){alert(currentText)}});
+document.getElementById('copyShopping').addEventListener('click',async()=>{
+ const rows=[...document.querySelectorAll('#shopping li')];
+ const lines=rows.map(li=>{
+   const item=li.querySelector('.shopping-name').textContent;
+   const qty=li.querySelector('.shopping-qty').value.trim();
+   const checked=li.querySelector('.shopping-check').checked;
+   return (checked?'[x] ':'[ ] ')+item+(qty?' — '+qty:'');
+ });
+ const textToCopy="AfyaPlate shopping list\n"+lines.join("\n");
+ try{await navigator.clipboard.writeText(textToCopy);alert("Shopping list copied. You can now paste and share it.");}
+ catch(e){window.prompt("Copy your shopping list:",textToCopy);}
+});
 document.getElementById('save').addEventListener('click',()=>{try{localStorage.setItem('afyaplate_saved_plan',currentText);alert("Saved on this phone in this browser.");}catch(e){alert("Your browser could not save this plan.")}});
 document.getElementById('year').textContent=new Date().getFullYear();
 </script>
