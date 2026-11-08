@@ -184,34 +184,104 @@ main{margin:8px auto 50px}
  #results{padding:18px 15px}
 }
 
+
+/* App-inspired AfyaPlate refresh */
+.app-home{background:#174f35;color:#fff;padding:22px 22px 34px;border:0}
+.app-topbar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.app-brand{color:#fff!important}
+.app-brand .logo{background:#dff0c9}
+.app-badge{font-size:.68rem;font-weight:850;letter-spacing:1px;color:#e5f2df;border:1px solid #ffffff35;background:#ffffff12;padding:8px 12px;border-radius:999px}
+.app-intro{max-width:980px;margin:44px auto 0}
+.app-kicker{font-size:.72rem;letter-spacing:1.7px;font-weight:850;color:#bddd9c;margin:0 0 12px}
+.app-intro h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.08;letter-spacing:-1.4px;color:#fff;margin:0 0 8px}
+.app-intro h1 span{display:block;font-size:.58em;line-height:1.3;font-weight:550;letter-spacing:-.5px;color:#e1eee3;margin-top:8px}
+.app-subtitle{color:#d4e5d9;margin:12px 0 20px;max-width:650px}
+.recipe-search{display:flex;align-items:center;gap:12px;max-width:680px;background:#fff;color:#26372e;border-radius:14px;padding:0 16px;min-height:58px;box-shadow:0 8px 22px #092d1b35}
+.recipe-search>span{font-size:1.7rem;line-height:1;color:#4c5b52}
+.recipe-search input{border:0!important;box-shadow:none!important;padding:12px 0;background:transparent;font-size:.95rem}
+.category-row{max-width:980px;margin:26px auto 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.category-tile{border:0;background:transparent;color:#f4f8f3;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:0;text-align:left;font:inherit;font-weight:700;cursor:pointer}
+.category-art{width:100%;height:108px;border-radius:15px;display:grid;place-items:center;font-size:3.3rem;box-shadow:inset 0 0 0 1px #ffffff26;transition:transform .18s}
+.category-tile:hover .category-art{transform:translateY(-3px)}
+.breakfast-art{background:linear-gradient(140deg,#f5d8a7,#b77b3e)}
+.lunch-art{background:linear-gradient(140deg,#b7d49c,#477e51)}
+.dinner-art{background:linear-gradient(140deg,#f1c38c,#a85a36)}
+.snack-art{background:linear-gradient(140deg,#f0e5a8,#8eaf63)}
+.picked-heading{max-width:980px;margin:32px auto 13px;display:flex;align-items:end;justify-content:space-between;gap:12px}
+.picked-eyebrow{font-size:.66rem;letter-spacing:1.5px;color:#c6e2ad;font-weight:850}
+.picked-heading h2{font-size:1.5rem;color:#fff;margin:2px 0 0}
+.picked-heading>a{color:#e2f0dc;text-decoration:none;font-size:.84rem;font-weight:800}
+.featured-meal{max-width:980px;margin:0 auto -68px;background:#fff;color:#26372e;border-radius:18px;overflow:hidden;box-shadow:0 18px 40px #092d1b40;position:relative}
+.featured-photo{height:210px;background:radial-gradient(circle at 25% 30%,#f3d39a,#b96c35 48%,#71452b);display:flex;align-items:center;justify-content:center;gap:18px;font-size:6.3rem;position:relative;overflow:hidden}
+.featured-photo:before,.featured-photo:after{content:"";position:absolute;border:1px solid #fff7;border-radius:50%;width:210px;height:210px}
+.featured-photo:after{width:270px;height:270px}
+.featured-photo>span{z-index:1;filter:drop-shadow(0 8px 8px #42271355)}
+.featured-photo .featured-leaf{font-size:3.4rem}
+.featured-info{padding:16px 18px 18px}
+.featured-titleline{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.featured-titleline h3{margin:0;font-size:1.15rem;color:#26372e}
+.featured-time{font-size:.75rem;color:#65766a}
+.featured-info p{font-size:.86rem;color:#66756d;margin:7px 0 12px}
+.featured-meta{display:flex;gap:8px;flex-wrap:wrap}
+.featured-meta span{background:#f0f5ef;color:#38634a;border-radius:8px;padding:6px 9px;font-size:.72rem;font-weight:750}
+.app-features{margin-top:88px}
+main{margin-top:0;padding-top:0}
+#kenyan-meal-planning-guide{margin-top:18px}
+.mobile-tabs{display:none}
+.category-tile:focus-visible,.picked-heading a:focus-visible,.mobile-tabs a:focus-visible{outline:3px solid #c6e2ad;outline-offset:3px}
+@media(max-width:700px){
+ .app-home{padding:18px 16px 30px}
+ .app-intro{margin-top:35px}
+ .app-intro h1{font-size:2.25rem}
+ .app-intro h1 span{font-size:.57em}
+ .category-row{gap:9px;margin-top:22px}
+ .category-art{height:78px;font-size:2.5rem;border-radius:12px}
+ .category-tile{font-size:.78rem}
+ .picked-heading{margin-top:26px}
+ .featured-photo{height:165px;font-size:5rem}
+ .featured-info{padding:14px}
+ .featured-titleline h3{font-size:1rem}
+ .app-features{margin-top:90px}
+ .mobile-tabs{position:fixed;z-index:50;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-top:1px solid #e3e9e2;padding:8px 5px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -8px 22px #173e2e12}
+ .mobile-tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:#66756d;font-size:.69rem;font-weight:750}
+ .mobile-tabs a span{font-size:1.25rem;line-height:1.2}
+ .mobile-tabs a.active{color:#23845d}
+ body{padding-bottom:68px}
+ footer{padding-bottom:80px}
+}
 </style>
 </head>
 <body>
-<header class="site-header">
-  <div class="nav">
-    <a class="brand" href="#" aria-label="AfyaPlate home"><span class="logo">🥑</span><span>AfyaPlate</span></a>
-    <nav class="navlinks" aria-label="Main navigation">
-      <a href="#planner">Meal planner</a><a href="#benefits">Why AfyaPlate</a><a href="#about">About</a>
-    </nav>
-    <span class="nav-pill">KENYAN MEAL PLANNER</span>
+<header class="app-home" id="home">
+  <div class="app-topbar">
+    <a class="brand app-brand" href="#home" aria-label="AfyaPlate home"><span class="logo">🥑</span><span>AfyaPlate</span></a>
+    <span class="app-badge">KENYAN MEAL PLANNER</span>
   </div>
-  <div class="hero">
-    <div class="hero-copy">
-      <div class="eyebrow"><span class="eyebrow-dot"></span> MADE FOR EVERYDAY KENYAN HOMES</div>
-      <h1>Good food.<br><em>Clear plans.</em><br>Less stress.</h1>
-      <p>Deciding what to cook just got easier. Discover familiar Kenyan meals, plan around your household budget and get a shopping list in seconds.</p>
-      <div class="hero-actions"><a href="#planner" class="btn hero-cta">Plan my meals <span>→</span></a><a class="text-link" href="#benefits">Explore AfyaPlate ↓</a></div>
-      <div class="hero-proof"><span>🥬 Local food ideas</span><span>•</span><span>💚 Budget-conscious</span></div>
-    </div>
-    <div class="hero-visual" aria-label="Illustration of a balanced Kenyan meal">
-      <div class="visual-top"><span>YOUR DAILY PLATE</span><span class="visual-spark">✳</span></div>
-      <div class="food-bowl"><span>🥑</span><span>🥗</span><span>🍲</span></div>
-      <div class="visual-caption"><strong>Local foods. Balanced choices.</strong><small>Simple inspiration for every day.</small></div>
-      <div class="floating-note"><span>✨</span><div><b>Plan with confidence</b><small>One day at a time</small></div></div>
-    </div>
+  <div class="app-intro">
+    <p class="app-kicker">MADE FOR EVERYDAY KENYAN HOMES</p>
+    <h1>Hello! <span>What should we prepare today?</span></h1>
+    <p class="app-subtitle">Find familiar meals, plan around your budget and make shopping simpler.</p>
+    <label class="recipe-search" for="recipeSearch"><span aria-hidden="true">⌕</span><input id="recipeSearch" type="search" placeholder="Search Kenyan meals and ingredients..." autocomplete="off"></label>
   </div>
+  <div class="category-row" aria-label="Browse meal types">
+    <button class="category-tile" type="button" data-category="breakfast"><span class="category-art breakfast-art">🍳</span><span>Breakfast</span></button>
+    <button class="category-tile" type="button" data-category="lunch"><span class="category-art lunch-art">🥗</span><span>Lunch</span></button>
+    <button class="category-tile" type="button" data-category="supper"><span class="category-art dinner-art">🍲</span><span>Supper</span></button>
+    <button class="category-tile" type="button" data-category="all"><span class="category-art snack-art">🍌</span><span>All meals</span></button>
+  </div>
+  <div class="picked-heading"><div><span class="picked-eyebrow">AFYAPLATE PICKS</span><h2>Picked for you</h2></div><a href="#planner">Build a plan ↗</a></div>
+  <article class="featured-meal">
+    <div class="featured-photo" aria-hidden="true"><span>🍛</span><span class="featured-leaf">🥑</span></div>
+    <div class="featured-info"><div class="featured-titleline"><h3>Githeri & avocado</h3><span class="featured-time">Everyday favourite</span></div><p>A familiar Kenyan mix of maize and beans, served with fresh vegetables or avocado when available.</p><div class="featured-meta"><span>🇰🇪 Kenyan-inspired</span><span>Budget-conscious</span></div></div>
+  </article>
 </header>
-<section class="feature-strip" id="benefits">
+<nav class="mobile-tabs" aria-label="Quick navigation">
+  <a class="active" href="#home"><span>⌂</span>Home</a>
+  <a href="#planner"><span>▤</span>Plan</a>
+  <a href="#results"><span>🛒</span>Shopping</a>
+  <a href="#about"><span>♙</span>About</a>
+</nav>
+<section class="feature-strip app-features" id="benefits">
   <div class="feature"><div class="feature-icon">💸</div><div><b>Make your budget work</b><span>Choose a daily amount that suits your household.</span></div></div>
   <div class="feature"><div class="feature-icon">🥘</div><div><b>Enjoy local inspiration</b><span>Explore familiar foods and practical combinations.</span></div></div>
   <div class="feature"><div class="feature-icon">🛒</div><div><b>Shop with a plan</b><span>Bring your ingredients together in one list.</span></div></div>
@@ -369,6 +439,28 @@ function generate(){
  document.getElementById('results').classList.add('show');
  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
+
+const recipeSearch=document.getElementById('recipeSearch');
+const categoryButtons=[...document.querySelectorAll('.category-tile')];
+const searchableMeals=Object.entries(meals).flatMap(([type,items])=>items.map(item=>({...item,type})));
+function showMealSearch(query,typeFilter){
+ const q=(query||'').trim().toLowerCase();
+ const matches=searchableMeals.filter(m=>(!typeFilter||typeFilter==='all'||m.type===typeFilter)&&(!q||[m.name,...m.items].join(' ').toLowerCase().includes(q)));
+ let panel=document.getElementById('mealSearchResults');
+ if(!panel){
+  panel=document.createElement('section');panel.id='mealSearchResults';panel.className='card';
+  document.querySelector('main').insertBefore(panel,document.getElementById('planner'));
+ }
+ if(!q&&!typeFilter){panel.remove();return}
+ panel.innerHTML='<h2 class="section-title">Meal ideas</h2><p class="sub">'+matches.length+' matching meal ideas from AfyaPlate</p>'+(matches.length?'<div class="mealgrid">'+matches.slice(0,8).map(m=>'<article class="meal"><div class="emoji">'+m.emoji+'</div><span class="tag">'+({breakfast:'Breakfast',lunch:'Lunch',supper:'Supper'}[m.type])+'</span><h3>'+m.name+'</h3><p>Indicative estimate: <b>KSh '+m.cost.toLocaleString('en-KE')+'</b> per person</p><p>'+m.items.join(' · ')+'</p></article>').join('')+'</div>':'<p>No matching meals yet. Try another food or ingredient.')+'<p style="margin:14px 0 0"><a href="#planner">Create a household meal plan →</a></p>';
+ panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+if(recipeSearch){recipeSearch.addEventListener('input',()=>showMealSearch(recipeSearch.value,null));recipeSearch.addEventListener('keydown',e=>{if(e.key==='Enter'){showMealSearch(recipeSearch.value,null)}})}
+categoryButtons.forEach(btn=>btn.addEventListener('click',()=>{
+ const type=btn.dataset.category;
+ document.querySelectorAll('.mealcheck').forEach(c=>c.checked=type==='all'||c.value===type);
+ if(type==='all'){showMealSearch('', 'all')}else{showMealSearch('',type)}
+}));
 document.getElementById('generate').addEventListener('click',generate);
 document.getElementById('again').addEventListener('click',()=>{document.getElementById('budgetNote')?.remove();generate()});
 document.getElementById('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(currentText);alert("Meal plan copied.");}catch(e){alert(currentText)}});
