@@ -273,6 +273,31 @@ main{margin-top:0;padding-top:0}
 @media(max-width:700px){.marketplace-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.marketplace-tile{padding:14px}.marketplace-icon{width:43px;height:43px}}
 @media(max-width:390px){.marketplace-grid{grid-template-columns:1fr}}
 
+
+/* AfyaPlate Kitchen Shop */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.shop-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:16px}
+.marketplace-kicker{font-size:.72rem;font-weight:900;letter-spacing:1.5px;color:#4b805c;margin:0 0 8px}
+.shop-search{display:flex;align-items:center;gap:10px;border:1px solid #dfe8dc;background:#fbfdf9;border-radius:14px;padding:0 14px;margin:15px 0}
+.shop-search>span{font-size:1.5rem;color:#557662}.shop-search input{border:0!important;background:transparent!important;box-shadow:none!important;min-height:48px;padding-left:0}
+.shop-categories{display:flex;gap:8px;overflow-x:auto;padding:2px 0 13px;margin-bottom:10px}
+.shop-filter{white-space:nowrap;border:1px solid #dce8d9;background:#fff;color:#41634d;border-radius:999px;padding:9px 14px;font:inherit;font-size:.8rem;font-weight:800;cursor:pointer}
+.shop-filter.active,.shop-filter:hover{background:#176447;color:#fff;border-color:#176447}
+.shop-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.shop-product{border:1px solid #e4ebe1;border-radius:17px;overflow:hidden;background:#fff;min-width:0;transition:transform .18s,box-shadow .18s}
+.shop-product:hover{transform:translateY(-2px);box-shadow:0 12px 25px #214c3010}
+.shop-product[hidden]{display:none}
+.shop-product-art{min-height:125px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px}
+.shop-product-art>span{font-size:3rem;line-height:1.15}.shop-product-art small{font-size:.62rem;font-weight:900;letter-spacing:1.2px;color:#42644e}
+.art-green{background:linear-gradient(135deg,#e4f0dc,#c9dfc1)}.art-cream{background:linear-gradient(135deg,#f7f0df,#eee1c6)}.art-peach{background:linear-gradient(135deg,#fff0e5,#f3d6bf)}
+.shop-product-info{padding:13px}.shop-product-info h3{margin:0 0 5px;color:#24583e;font-size:.98rem}.shop-product-info p{margin:0 0 11px;color:#6d7b70;font-size:.8rem;line-height:1.5}
+.shop-status{display:inline-block;background:#f1f5ed;color:#59704e;border-radius:8px;padding:6px 8px;font-size:.7rem;font-weight:800}
+.shop-empty{padding:18px;text-align:center;color:#6d7b70;background:#f7faf5;border-radius:12px}
+.shop-own{display:flex;gap:13px;align-items:flex-start;background:#f4f7ed;border:1px solid #e2ead8;border-radius:16px;padding:15px;margin-top:18px}
+.shop-own-icon{font-size:1.5rem}.shop-own strong{color:#24583e}.shop-own p{margin:4px 0 0;color:#6b796d;font-size:.82rem}
+.marketplace-disclosure{margin-top:14px;padding:12px 14px;border-radius:12px;background:#faf8ef;color:#71684d;font-size:.76rem;line-height:1.55}
+@media(max-width:760px){.shop-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.shop-product-art{min-height:110px}}
+@media(max-width:420px){.shop-grid{grid-template-columns:1fr}.shop-product-art{min-height:100px}}
 </style>
 </head>
 <body>
@@ -325,21 +350,59 @@ main{margin-top:0;padding-top:0}
   </section>
 
   <section class="card" id="marketplace">
-    <div class="marketplace-intro">
+    <div class="shop-hero">
       <div>
-        <p class="marketplace-kicker">AFYAPLATE MARKETPLACE</p>
-        <h2 class="section-title">Smart picks for your kitchen 🛍️</h2>
-        <p class="sub" style="margin:5px 0 0">Discover useful kitchen essentials and food-shopping ideas selected for everyday Kenyan homes.</p>
+        <p class="marketplace-kicker">AFYAPLATE KITCHEN SHOP</p>
+        <h2 class="section-title">Good food starts with a good kitchen 🧡</h2>
+        <p class="sub">Discover useful kitchen tools, food storage ideas and everyday grocery inspiration for Kenyan homes.</p>
       </div>
-      <span class="nav-pill">LAUNCHING SOON</span>
+      <span class="nav-pill">PREVIEW · FREE TO BROWSE</span>
     </div>
-    <div class="marketplace-grid">
-      <article class="marketplace-tile"><div class="marketplace-icon" aria-hidden="true">🍳</div><h3>Cookware & utensils</h3><p>Explore pots, pans, cooking spoons and everyday kitchen tools.</p><span class="marketplace-soon">Recommendations coming soon</span></article>
-      <article class="marketplace-tile"><div class="marketplace-icon" aria-hidden="true">🥤</div><h3>Kitchen appliances</h3><p>Find helpful appliances such as blenders, kettles and food processors.</p><span class="marketplace-soon">Recommendations coming soon</span></article>
-      <article class="marketplace-tile"><div class="marketplace-icon" aria-hidden="true">🥡</div><h3>Food storage</h3><p>Ideas for lunch boxes, reusable containers and pantry organisation.</p><span class="marketplace-soon">Recommendations coming soon</span></article>
-      <article class="marketplace-tile"><div class="marketplace-icon" aria-hidden="true">🛒</div><h3>Grocery deals</h3><p>Look out for useful ingredient offers and food-shopping deals.</p><span class="marketplace-soon">Deals coming soon</span></article>
+    <div class="shop-search">
+      <label class="sr-only" for="shopSearch">Search kitchen products</label>
+      <span aria-hidden="true">⌕</span>
+      <input id="shopSearch" type="search" placeholder="Search blenders, sufurias, lunch boxes..." autocomplete="off">
     </div>
-    <div class="marketplace-disclosure">We're preparing this section. Product recommendations and affiliate links will be added after partner programmes are confirmed. If you buy through an affiliate link in the future, AfyaPlate may earn a commission at no extra cost to you.</div>
+    <div class="shop-categories" role="group" aria-label="Filter kitchen shop categories">
+      <button class="shop-filter active" type="button" data-shop-filter="all">All picks</button>
+      <button class="shop-filter" type="button" data-shop-filter="appliances">Appliances</button>
+      <button class="shop-filter" type="button" data-shop-filter="cookware">Cookware</button>
+      <button class="shop-filter" type="button" data-shop-filter="storage">Food storage</button>
+      <button class="shop-filter" type="button" data-shop-filter="healthy">Healthy cooking</button>
+      <button class="shop-filter" type="button" data-shop-filter="grocery">Grocery ideas</button>
+    </div>
+    <div class="shop-grid" id="shopGrid">
+      <article class="shop-product" data-category="appliances" data-search="blender smoothie juice kitchen appliance">
+        <div class="shop-product-art art-green"><span>🥤</span><small>APPLIANCES</small></div>
+        <div class="shop-product-info"><h3>Blenders & smoothie makers</h3><p>For smoothies, sauces and quick food preparation.</p><span class="shop-status">Product links coming soon</span></div>
+      </article>
+      <article class="shop-product" data-category="cookware" data-search="sufuria cooking pot saucepan frying pan cookware">
+        <div class="shop-product-art art-cream"><span>🍳</span><small>COOKWARE</small></div>
+        <div class="shop-product-info"><h3>Sufurias & cooking pots</h3><p>Everyday cookware for preparing family meals.</p><span class="shop-status">Product links coming soon</span></div>
+      </article>
+      <article class="shop-product" data-category="storage" data-search="food storage containers lunch box bottles jars">
+        <div class="shop-product-art art-peach"><span>🥡</span><small>FOOD STORAGE</small></div>
+        <div class="shop-product-info"><h3>Food containers & lunch boxes</h3><p>Keep leftovers, packed lunches and pantry items organised.</p><span class="shop-status">Product links coming soon</span></div>
+      </article>
+      <article class="shop-product" data-category="healthy" data-search="air fryer steamer kitchen scale healthy cooking">
+        <div class="shop-product-art art-green"><span>🥦</span><small>HEALTHY COOKING</small></div>
+        <div class="shop-product-info"><h3>Healthy cooking tools</h3><p>Explore steamers, kitchen scales and helpful prep tools.</p><span class="shop-status">Product links coming soon</span></div>
+      </article>
+      <article class="shop-product" data-category="cookware" data-search="knife chopping board utensils kitchen essentials">
+        <div class="shop-product-art art-peach"><span>🔪</span><small>KITCHEN ESSENTIALS</small></div>
+        <div class="shop-product-info"><h3>Knives & kitchen utensils</h3><p>Useful basics for chopping, measuring and serving.</p><span class="shop-status">Product links coming soon</span></div>
+      </article>
+      <article class="shop-product" data-category="grocery" data-search="grocery deals beans rice flour cooking oil food staples">
+        <div class="shop-product-art art-cream"><span>🛒</span><small>GROCERY IDEAS</small></div>
+        <div class="shop-product-info"><h3>Everyday grocery finds</h3><p>We’ll feature useful pantry staples and verified offers.</p><span class="shop-status">Deals coming soon</span></div>
+      </article>
+    </div>
+    <p class="shop-empty" id="shopEmpty" hidden>No matching items yet. Try another search or category.</p>
+    <div class="shop-own">
+      <div class="shop-own-icon">🏷️</div>
+      <div><strong>AfyaPlate originals — coming later</strong><p>In the future, this space can feature products sold directly by AfyaPlate, alongside carefully selected partner products.</p></div>
+    </div>
+    <div class="marketplace-disclosure">AfyaPlate is preparing its product catalogue. No products are currently for sale through this preview. When affiliate links are added, we’ll clearly label them; AfyaPlate may earn a commission from qualifying purchases at no extra cost to you. Prices and availability will be checked with the seller.</div>
   </section>
 
   <section class="card" id="planner">
@@ -542,6 +605,18 @@ document.getElementById('copyShopping').addEventListener('click',async()=>{
 });
 document.getElementById('save').addEventListener('click',()=>{try{localStorage.setItem('afyaplate_saved_plan',currentText);alert("Saved on this phone in this browser.");}catch(e){alert("Your browser could not save this plan.")}});
 document.getElementById('year').textContent=new Date().getFullYear();
+const shopSearch=document.getElementById('shopSearch');
+const shopFilters=[...document.querySelectorAll('.shop-filter')];
+const shopProducts=[...document.querySelectorAll('.shop-product')];
+let activeShopFilter='all';
+function filterShop(){
+ const q=(shopSearch?.value||'').trim().toLowerCase();let visible=0;
+ shopProducts.forEach(card=>{const matchCategory=activeShopFilter==='all'||card.dataset.category===activeShopFilter;const matchText=!q||(card.dataset.search+' '+card.innerText).toLowerCase().includes(q);const show=matchCategory&&matchText;card.hidden=!show;if(show)visible++});
+ const empty=document.getElementById('shopEmpty');if(empty)empty.hidden=visible!==0;
+}
+shopSearch?.addEventListener('input',filterShop);
+shopFilters.forEach(btn=>btn.addEventListener('click',()=>{activeShopFilter=btn.dataset.shopFilter;shopFilters.forEach(b=>b.classList.toggle('active',b===btn));filterShop()}));
+
 </script>
 </body>
 </html>
