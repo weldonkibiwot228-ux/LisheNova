@@ -658,7 +658,7 @@ document.getElementById('copyShopping').addEventListener('click',async()=>{
 });
 document.getElementById('save').addEventListener('click',()=>{try{localStorage.setItem('afyaplate_saved_plan',currentText);alert("Saved on this phone in this browser.");}catch(e){alert("Your browser could not save this plan.")}});
 document.getElementById('year').textContent=new Date().getFullYear();
-const recipeSearch=document.getElementById('recipeSearch');
+
 const recipeFilters=[...document.querySelectorAll('.recipe-filter')];
 const recipeCards=[...document.querySelectorAll('.recipe-card')];
 let activeRecipeFilter='all';
