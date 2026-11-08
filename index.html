@@ -258,13 +258,28 @@ main{margin-top:0;padding-top:0}
 #feedback .feedback-help{font-size:.82rem;color:var(--muted);margin:10px 0 0}
 @media(max-width:600px){#feedback .feedback-frame{height:1320px}}
 
+
+/* AfyaPlate Marketplace — launch-ready storefront shell */
+.marketplace-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.marketplace-kicker{font-size:.68rem;letter-spacing:1.4px;font-weight:850;color:#6b8a58;margin:0 0 7px}
+.marketplace-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-top:18px}
+.marketplace-tile{border:1px solid #e3eadf;border-radius:17px;background:linear-gradient(145deg,#fff,#f7faf3);padding:17px;min-width:0}
+.marketplace-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:#edf4e7;font-size:1.65rem;margin-bottom:12px}
+.marketplace-tile h3{font-size:.96rem;color:#24583f;margin:0 0 5px}
+.marketplace-tile p{font-size:.8rem;line-height:1.5;color:#718075;margin:0 0 12px}
+.marketplace-soon{display:inline-block;background:#eef4e9;color:#54734d;border-radius:999px;padding:6px 9px;font-size:.68rem;font-weight:800}
+.marketplace-disclosure{margin-top:16px;padding:13px 15px;border-radius:13px;background:#f5f7ef;border:1px solid #e7ecdf;color:#68796b;font-size:.78rem;line-height:1.6}
+.marketplace-nav{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:#e5f2df;border:1px solid #ffffff45;background:#ffffff12;padding:8px 12px;border-radius:999px;font-size:.68rem;font-weight:850;letter-spacing:.8px}
+@media(max-width:700px){.marketplace-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.marketplace-tile{padding:14px}.marketplace-icon{width:43px;height:43px}}
+@media(max-width:390px){.marketplace-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
 <header class="app-home" id="home">
   <div class="app-topbar">
     <a class="brand app-brand" href="#home" aria-label="AfyaPlate home"><span class="logo">🥑</span><span>AfyaPlate</span></a>
-    <span class="app-badge">KENYAN MEAL PLANNER</span>
+    <a class="marketplace-nav" href="#marketplace">🛍️ MARKETPLACE</a>
   </div>
   <div class="app-intro">
     <p class="app-kicker">MADE FOR EVERYDAY KENYAN HOMES</p>
@@ -288,6 +303,7 @@ main{margin-top:0;padding-top:0}
   <a class="active" href="#home"><span>⌂</span>Home</a>
   <a href="#planner"><span>▤</span>Plan</a>
   <a href="#results"><span>🛒</span>Shopping</a>
+  <a href="#marketplace"><span>🏪</span>Market</a>
   <a href="#about"><span>♙</span>About</a>
 </nav>
 <section class="feature-strip app-features" id="benefits">
@@ -307,6 +323,25 @@ main{margin-top:0;padding-top:0}
     </div>
     <p class="note" style="margin-bottom:0">AfyaPlate is a free-to-try prototype. Food costs are illustrative estimates, not live market prices. Check current prices with local sellers.</p>
   </section>
+
+  <section class="card" id="marketplace">
+    <div class="marketplace-intro">
+      <div>
+        <p class="marketplace-kicker">AFYAPLATE MARKETPLACE</p>
+        <h2 class="section-title">Smart picks for your kitchen 🛍️</h2>
+        <p class="sub" style="margin:5px 0 0">Discover useful kitchen essentials and food-shopping ideas selected for everyday Kenyan homes.</p>
+      </div>
+      <span class="nav-pill">LAUNCHING SOON</span>
+    </div>
+    <div class="marketplace-grid">
+      <article class="marketplace-tile"><div class="marketplace-icon" aria-hidden="true">🍳</div><h3>Cookware & utensils</h3><p>Explore pots, pans, cooking spoons and everyday kitchen tools.</p><span class="marketplace-soon">Recommendations coming soon</span></article>
+      <article class="marketplace-tile"><div class="marketplace-icon" aria-hidden="true">🥤</div><h3>Kitchen appliances</h3><p>Find helpful appliances such as blenders, kettles and food processors.</p><span class="marketplace-soon">Recommendations coming soon</span></article>
+      <article class="marketplace-tile"><div class="marketplace-icon" aria-hidden="true">🥡</div><h3>Food storage</h3><p>Ideas for lunch boxes, reusable containers and pantry organisation.</p><span class="marketplace-soon">Recommendations coming soon</span></article>
+      <article class="marketplace-tile"><div class="marketplace-icon" aria-hidden="true">🛒</div><h3>Grocery deals</h3><p>Look out for useful ingredient offers and food-shopping deals.</p><span class="marketplace-soon">Deals coming soon</span></article>
+    </div>
+    <div class="marketplace-disclosure">We're preparing this section. Product recommendations and affiliate links will be added after partner programmes are confirmed. If you buy through an affiliate link in the future, AfyaPlate may earn a commission at no extra cost to you.</div>
+  </section>
+
   <section class="card" id="planner">
     <h2 class="section-title">🍽️ Build your meal plan</h2>
     <p class="sub">Tell us what works for your household. Prices are estimates and vary by location and season.</p>
