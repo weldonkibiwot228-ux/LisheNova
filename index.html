@@ -298,6 +298,14 @@ main{margin-top:0;padding-top:0}
 .marketplace-disclosure{margin-top:14px;padding:12px 14px;border-radius:12px;background:#faf8ef;color:#71684d;font-size:.76rem;line-height:1.55}
 @media(max-width:760px){.shop-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.shop-product-art{min-height:110px}}
 @media(max-width:420px){.shop-grid{grid-template-columns:1fr}.shop-product-art{min-height:100px}}
+
+/* AfyaPlate Recipe Library */
+.recipe-tools{display:flex;align-items:center;gap:10px;border:1px solid #dfe8dc;background:#fbfdf9;border-radius:14px;padding:0 14px;margin:15px 0}.recipe-tools>span{font-size:1.5rem;color:#557662}.recipe-tools input{border:0!important;background:transparent!important;box-shadow:none!important;min-height:48px;padding-left:0}
+.recipe-filters{display:flex;gap:8px;overflow-x:auto;padding:2px 0 13px;margin-bottom:10px}.recipe-filter{white-space:nowrap;border:1px solid #dce8d9;background:#fff;color:#41634d;border-radius:999px;padding:9px 14px;font:inherit;font-size:.8rem;font-weight:800;cursor:pointer}.recipe-filter.active,.recipe-filter:hover{background:#176447;color:#fff;border-color:#176447}
+.recipe-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.recipe-card{border:1px solid #e4ebe1;border-radius:17px;overflow:hidden;background:#fff;min-width:0}.recipe-card[hidden]{display:none}.recipe-art{min-height:125px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px}.recipe-art>span{font-size:3rem;line-height:1.15}.recipe-art small{font-size:.62rem;font-weight:900;letter-spacing:1.2px;color:#42644e}.recipe-beans{background:linear-gradient(135deg,#f3e8d1,#d8e8c8)}.recipe-porridge{background:linear-gradient(135deg,#f7edd8,#ead3a5)}.recipe-greens{background:linear-gradient(135deg,#e4f0dc,#c9dfc1)}.recipe-roots{background:linear-gradient(135deg,#f9e6d8,#edc7a8)}.recipe-mukimo{background:linear-gradient(135deg,#e8edce,#cdd9a2)}.recipe-eggs{background:linear-gradient(135deg,#fff0d8,#f4d6a5)}
+.recipe-body{padding:13px}.recipe-body h3{margin:5px 0;color:#24583e;font-size:1rem}.recipe-body>p{margin:0 0 10px;color:#6d7b70;font-size:.8rem;line-height:1.5}.recipe-meta{display:flex;justify-content:space-between;gap:8px;color:#6b796d;font-size:.7rem;font-weight:800}.recipe-details{border-top:1px solid #edf1eb;padding-top:9px;color:#52665a;font-size:.8rem}.recipe-details summary{color:#176b4d;font-weight:850;cursor:pointer}.recipe-details p{line-height:1.5}.recipe-details ol{padding-left:19px;line-height:1.6}.recipe-empty{padding:18px;text-align:center;color:#6d7b70;background:#f7faf5;border-radius:12px}
+@media(max-width:760px){.recipe-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.recipe-art{min-height:110px}}
+@media(max-width:420px){.recipe-grid{grid-template-columns:1fr}.recipe-art{min-height:100px}}
 </style>
 </head>
 <body>
@@ -318,7 +326,7 @@ main{margin-top:0;padding-top:0}
     <button class="category-tile" type="button" data-category="supper"><span class="category-art dinner-art">🍲</span><span>Supper</span></button>
     <button class="category-tile" type="button" data-category="all"><span class="category-art snack-art">🍌</span><span>All meals</span></button>
   </div>
-  <div class="picked-heading"><div><span class="picked-eyebrow">AFYAPLATE PICKS</span><h2>Picked for you</h2></div><a href="#planner">Build a plan ↗</a></div>
+  <div class="picked-heading"><div><span class="picked-eyebrow">AFYAPLATE PICKS</span><h2>Picked for you</h2></div><a href="#recipes">Recipes</a><a href="#planner">Build a plan ↗</a></div>
   <article class="featured-meal">
     <div class="featured-photo" aria-hidden="true"><span>🍛</span><span class="featured-leaf">🥑</span></div>
     <div class="featured-info"><div class="featured-titleline"><h3>Githeri & avocado</h3><span class="featured-time">Everyday favourite</span></div><p>A familiar Kenyan mix of maize and beans, served with fresh vegetables or avocado when available.</p><div class="featured-meta"><span>🇰🇪 Kenyan-inspired</span><span>Budget-conscious</span></div></div>
@@ -347,6 +355,51 @@ main{margin-top:0;padding-top:0}
       <div class="meal"><div class="emoji">🛒</div><h3>Shop with a list</h3><p>Bring meal ingredients together in a checklist you can use while shopping.</p></div>
     </div>
     <p class="note" style="margin-bottom:0">AfyaPlate is a free-to-try prototype. Food costs are illustrative estimates, not live market prices. Check current prices with local sellers.</p>
+  </section>
+
+  <section class="card" id="recipes">
+    <p class="eyebrow" style="color:var(--green);margin:0 0 8px">AFYAPLATE RECIPE LIBRARY</p>
+    <h2 class="section-title">Simple Kenyan meals, made easier 🍲</h2>
+    <p class="sub">Explore familiar, budget-conscious meal ideas. Each recipe includes ingredients and easy steps to help you get started.</p>
+    <div class="recipe-tools">
+      <label class="sr-only" for="recipeSearch">Search recipes</label>
+      <span aria-hidden="true">⌕</span>
+      <input id="recipeSearch" type="search" placeholder="Search recipes or ingredients..." autocomplete="off">
+    </div>
+    <div class="recipe-filters" role="group" aria-label="Filter recipes">
+      <button class="recipe-filter active" type="button" data-recipe-filter="all">All recipes</button>
+      <button class="recipe-filter" type="button" data-recipe-filter="breakfast">Breakfast</button>
+      <button class="recipe-filter" type="button" data-recipe-filter="lunch">Lunch & supper</button>
+      <button class="recipe-filter" type="button" data-recipe-filter="vegetarian">Vegetarian</button>
+    </div>
+    <div class="recipe-grid" id="recipeGrid">
+      <article class="recipe-card" data-recipe-category="lunch vegetarian" data-recipe-search="githeri beans maize tomato onion carrot lunch supper">
+        <div class="recipe-art recipe-beans"><span>🍲</span><small>KENYAN CLASSIC</small></div>
+        <div class="recipe-body"><div class="recipe-meta"><span>⏱ About 45–60 min</span><span>Easy</span></div><h3>Githeri ya kawaida</h3><p>A filling mix of maize and beans, finished with tomato, onion and vegetables.</p><details class="recipe-details"><summary>See ingredients & method</summary><p><b>Ingredients:</b> boiled maize, boiled beans, onion, tomato, carrot, cooking oil, salt and optional coriander.</p><ol><li>Soften chopped onion in a little oil.</li><li>Add tomato and carrot; cook until soft.</li><li>Stir in maize and beans with a splash of water.</li><li>Simmer until hot and season to taste.</li></ol></details></div>
+      </article>
+      <article class="recipe-card" data-recipe-category="breakfast vegetarian" data-recipe-search="uji porridge millet sorghum flour breakfast">
+        <div class="recipe-art recipe-porridge"><span>🥣</span><small>BREAKFAST</small></div>
+        <div class="recipe-body"><div class="recipe-meta"><span>⏱ About 15 min</span><span>Easy</span></div><h3>Warm uji</h3><p>A comforting porridge made with millet, sorghum or your preferred flour blend.</p><details class="recipe-details"><summary>See ingredients & method</summary><p><b>Ingredients:</b> uji flour, cool water, boiling water and optional milk or a little sugar.</p><ol><li>Mix flour with a little cool water to make a smooth paste.</li><li>Bring water to a boil in a sufuria.</li><li>Pour in the paste slowly while stirring.</li><li>Simmer for 8–10 minutes, stirring, then serve.</li></ol></details></div>
+      </article>
+      <article class="recipe-card" data-recipe-category="lunch vegetarian" data-recipe-search="sukuma wiki ugali greens kale collard tomatoes onion supper">
+        <div class="recipe-art recipe-greens"><span>🥬</span><small>EVERYDAY FAVOURITE</small></div>
+        <div class="recipe-body"><div class="recipe-meta"><span>⏱ About 25 min</span><span>Easy</span></div><h3>Sukuma wiki & ugali</h3><p>A familiar home meal pairing leafy greens with a maize-meal staple.</p><details class="recipe-details"><summary>See ingredients & method</summary><p><b>Ingredients:</b> maize flour, sukuma wiki, onion, tomato, oil, water and salt.</p><ol><li>Boil water and gradually add maize flour, stirring until firm ugali forms.</li><li>Fry onion, add tomato and cook until soft.</li><li>Add sliced sukuma wiki and cook until tender but still green.</li><li>Season and serve with ugali.</li></ol></details></div>
+      </article>
+      <article class="recipe-card" data-recipe-category="breakfast vegetarian" data-recipe-search="sweet potato nduma arrowroot breakfast boiled">
+        <div class="recipe-art recipe-roots"><span>🍠</span><small>BREAKFAST</small></div>
+        <div class="recipe-body"><div class="recipe-meta"><span>⏱ About 25–35 min</span><span>Easy</span></div><h3>Boiled sweet potatoes</h3><p>A simple breakfast or snack using locally available root vegetables.</p><details class="recipe-details"><summary>See ingredients & method</summary><p><b>Ingredients:</b> sweet potatoes, clean water and optional pinch of salt.</p><ol><li>Wash and peel if preferred, then cut large potatoes into pieces.</li><li>Place in a sufuria and cover with water.</li><li>Boil until a fork passes through easily.</li><li>Drain and serve warm.</li></ol></details></div>
+      </article>
+      <article class="recipe-card" data-recipe-category="lunch vegetarian" data-recipe-search="mukimo potatoes maize peas greens mashed">
+        <div class="recipe-art recipe-mukimo"><span>🥔</span><small>KENYAN CLASSIC</small></div>
+        <div class="recipe-body"><div class="recipe-meta"><span>⏱ About 40–50 min</span><span>Medium</span></div><h3>Mukimo-inspired mash</h3><p>Mashed potatoes with cooked greens, peas or maize for a hearty plate.</p><details class="recipe-details"><summary>See ingredients & method</summary><p><b>Ingredients:</b> potatoes, cooked peas, cooked maize, chopped leafy greens and salt.</p><ol><li>Boil potatoes until tender.</li><li>Cook greens separately until soft.</li><li>Add peas, maize and greens to the drained potatoes.</li><li>Mash together, season and serve warm.</li></ol></details></div>
+      </article>
+      <article class="recipe-card" data-recipe-category="lunch" data-recipe-search="tomato egg omelette eggs onion breakfast lunch">
+        <div class="recipe-art recipe-eggs"><span>🍳</span><small>QUICK MEAL</small></div>
+        <div class="recipe-body"><div class="recipe-meta"><span>⏱ About 10–15 min</span><span>Easy</span></div><h3>Tomato & onion eggs</h3><p>A quick pan meal to enjoy with bread, chapati or leftover ugali.</p><details class="recipe-details"><summary>See ingredients & method</summary><p><b>Ingredients:</b> eggs, tomato, onion, a little oil and salt.</p><ol><li>Beat eggs with a pinch of salt.</li><li>Soften onion in a lightly oiled pan, then add tomato.</li><li>Pour in eggs and stir gently until fully cooked.</li><li>Serve hot with your preferred accompaniment.</li></ol></details></div>
+      </article>
+    </div>
+    <p class="recipe-empty" id="recipeEmpty" hidden>No recipes match that search. Try another ingredient or category.</p>
+    <p class="note" style="margin-bottom:0">Cooking times are estimates and vary by stove and preparation. Adjust ingredients to your household, preferences and available budget.</p>
   </section>
 
   <section class="card" id="marketplace">
@@ -605,6 +658,14 @@ document.getElementById('copyShopping').addEventListener('click',async()=>{
 });
 document.getElementById('save').addEventListener('click',()=>{try{localStorage.setItem('afyaplate_saved_plan',currentText);alert("Saved on this phone in this browser.");}catch(e){alert("Your browser could not save this plan.")}});
 document.getElementById('year').textContent=new Date().getFullYear();
+const recipeSearch=document.getElementById('recipeSearch');
+const recipeFilters=[...document.querySelectorAll('.recipe-filter')];
+const recipeCards=[...document.querySelectorAll('.recipe-card')];
+let activeRecipeFilter='all';
+function filterRecipes(){const q=(recipeSearch?.value||'').trim().toLowerCase();let visible=0;recipeCards.forEach(card=>{const cats=card.dataset.recipeCategory.split(' ');const categoryMatch=activeRecipeFilter==='all'||cats.includes(activeRecipeFilter);const textMatch=!q||(card.dataset.recipeSearch+' '+card.innerText).toLowerCase().includes(q);const show=categoryMatch&&textMatch;card.hidden=!show;if(show)visible++});const empty=document.getElementById('recipeEmpty');if(empty)empty.hidden=visible!==0}
+recipeSearch?.addEventListener('input',filterRecipes);
+recipeFilters.forEach(btn=>btn.addEventListener('click',()=>{activeRecipeFilter=btn.dataset.recipeFilter;recipeFilters.forEach(b=>b.classList.toggle('active',b===btn));filterRecipes()}));
+
 const shopSearch=document.getElementById('shopSearch');
 const shopFilters=[...document.querySelectorAll('.shop-filter')];
 const shopProducts=[...document.querySelectorAll('.shop-product')];
