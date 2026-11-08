@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://weldonkibiwot228-ux.github.io/afyaplate/sitemap.xml
