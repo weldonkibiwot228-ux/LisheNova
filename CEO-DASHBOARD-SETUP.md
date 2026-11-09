@@ -22,7 +22,7 @@ The server checks the active Google account against the allowed owner email befo
 ## Feedback spreadsheet
 
 The Apps Script is configured for the feedback spreadsheet ID already supplied for AfyaPlate:
-`1NltrQs0Wl2LGk8kIa_RFOl5WCegearuNhL9da5juWtw`
+`1QWHJ6a-JWZU2mmPm8ot7tvyaanHbh5AGPs3wOOKRlQY`
 
 It looks for a response tab with a header row and returns the latest 200 non-empty submissions. If this is not the Google Form's response spreadsheet, update `SPREADSHEET_ID` in the Apps Script before deploying.
 
