@@ -8,7 +8,7 @@
  * and authorize access. The dashboard checks the signed-in Google email on every request.
  */
 const ALLOWED_EMAIL = "weldonkibiwot228@gmail.com";
-const SPREADSHEET_ID = "1NltrQs0Wl2LGk8kIa_RFOl5WCegearuNhL9da5juWtw";
+const SPREADSHEET_ID = "1QWHJ6a-JWZU2mmPm8ot7tvyaanHbh5AGPs3wOOKRlQY";
 
 function doGet(e) {
   const callback = (e && e.parameter && e.parameter.callback) || "";
