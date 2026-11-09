@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en-KE">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AfyaPlate | CEO Dashboard</title>
+<style>
+:root{--green:#145b43;--pale:#eaf3e9;--ink:#19352a;--muted:#687b70;--line:#e5eae1;--bg:#f7f8f2}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+header{background:#174f35;color:#fff;padding:22px 18px}header .wrap,main{max-width:1050px;margin:auto}header a{color:#e5f2df;text-decoration:none;font-weight:700}h1{margin:14px 0 3px;font-size:clamp(1.8rem,5vw,2.6rem)}header p{margin:0;color:#d4e5d9}
+main{padding:22px 16px 50px}.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 12px 30px #19412e0c}
+.status{padding:12px 14px;border-radius:12px;background:#f0f5e9;color:#315b43;font-weight:650;margin-bottom:16px}.status.error{background:#fff2ed;color:#93472e}.status.ok{background:#eaf6ed;color:#23613d}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.stat{padding:17px;border-radius:15px;background:#f4f8f0;border:1px solid #e3ecdf}.stat span{display:block;color:var(--muted);font-size:.82rem}.stat strong{display:block;color:var(--green);font-size:1.7rem;margin-top:5px}
+label{font-weight:750;display:block;margin-bottom:7px}input{width:100%;padding:12px;border:1px solid #d7e2da;border-radius:11px;font:inherit}
+button{border:0;border-radius:11px;padding:12px 17px;background:var(--green);color:#fff;font:inherit;font-weight:800;cursor:pointer;margin-top:10px}
+button.secondary{background:var(--pale);color:var(--green)}.hint{font-size:.85rem;color:var(--muted)}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);vertical-align:top;min-width:110px}th{color:var(--green);background:#f7faf5;position:sticky;top:0}.empty{color:var(--muted);padding:22px;text-align:center}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.panel{padding:16px}header{padding:18px 16px}}
+</style></head>
+<body>
+<header><div class="wrap"><a href="./">← AfyaPlate home</a><h1>👨🏽‍💼 CEO Dashboard</h1><p>Your private business overview and client feedback</p></div></header>
+<main>
+<section class="panel">
+<div id="status" class="status">Dashboard setup: paste your Google Apps Script Web App URL below. Your feedback is not displayed until the private connection is configured.</div>
+<label for="endpoint">Private Google Apps Script Web App URL</label>
+<input id="endpoint" type="url" placeholder="https://script.google.com/macros/s/…/exec" autocomplete="url">
+<button id="connect">Connect securely</button>
+<button id="forget" class="secondary" type="button">Clear saved connection</button>
+<p class="hint">Only the Google account weldonkibiwot228@gmail.com is authorized by the server. Do not paste a spreadsheet sharing link here.</p>
+</section>
+<section class="panel"><div class="grid">
+<div class="stat"><span>Total feedback submissions</span><strong id="total">—</strong></div>
+<div class="stat"><span>Average rating</span><strong id="average">—</strong></div>
+<div class="stat"><span>Latest response</span><strong id="latest">—</strong></div>
+</div></section>
+<section class="panel"><h2>Recent client feedback</h2><p class="hint" id="sheetname">Waiting for a secure connection.</p><div class="table-wrap" id="feedback"><div class="empty">Connect the private Google Sheet service to view real submissions.</div></div></section>
+</main>
+<script>
+const endpointInput=document.getElementById('endpoint');
+const statusBox=document.getElementById('status');
+const saved=localStorage.getItem('afyaplate_ceo_endpoint');
+if(saved)endpointInput.value=saved;
+function setStatus(message,type){statusBox.textContent=message;statusBox.className='status '+(type||'')}
+function jsonp(url){return new Promise((resolve,reject)=>{const callback='afyaplateCallback'+Date.now();const script=document.createElement('script');const timer=setTimeout(()=>{cleanup();reject(new Error('Connection timed out. Open the Apps Script URL in a Google browser tab, sign in and authorize it, then retry.'))},15000);function cleanup(){clearTimeout(timer);delete window[callback];script.remove()}window[callback]=data=>{cleanup();resolve(data)};script.onerror=()=>{cleanup();reject(new Error('Could not load the dashboard service. Check the deployment URL and Google sign-in.'))};script.src=url+(url.includes('?')?'&':'?')+'callback='+callback;document.body.appendChild(script)})}
+function cellValue(row,headers,patterns){for(let i=0;i<headers.length;i++){if(patterns.some(p=>p.test(String(headers[i]))))return row[i]||''}return ''}
+function render(data){
+document.getElementById('total').textContent=data.total??0;
+const ratingIndexes=data.headers.map((h,i)=>/rating|rate|stars|score/i.test(String(h))?i:-1).filter(i=>i>=0);
+const ratings=data.rows.map(r=>ratingIndexes.map(i=>Number(String(r[i]).replace(/[^0-9.]/g,''))).find(n=>Number.isFinite(n)&&n>0&&n<=5)).filter(Boolean);
+document.getElementById('average').textContent=ratings.length?(ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1)+'/5':'—';
+const dateIndex=data.headers.findIndex(h=>/timestamp|date|time/i.test(String(h)));
+document.getElementById('latest').textContent=data.rows.length&&dateIndex>=0?(data.rows[0][dateIndex]||'Available'):'—';
+document.getElementById('sheetname').textContent='Source: '+(data.sheetName||'Feedback response sheet')+' · Updated '+new Date(data.updatedAt).toLocaleString();
+if(!data.rows.length){document.getElementById('feedback').innerHTML='<div class="empty">No feedback submissions found yet.</div>';return}
+const headers=data.headers;const rows=data.rows.slice(0,50);
+document.getElementById('feedback').innerHTML='<table><thead><tr>'+headers.map(h=>'<th>'+escapeHtml(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+headers.map((h,i)=>'<td>'+escapeHtml(r[i]||'')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+}
+function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function connect(){const url=endpointInput.value.trim();if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(url)){setStatus('Enter the deployed Google Apps Script Web App URL ending in /exec.','error');return}
+localStorage.setItem('afyaplate_ceo_endpoint',url);setStatus('Connecting to Google and checking owner access…');
+try{const data=await jsonp(url);if(!data.ok)throw new Error(data.error||'The service rejected this account.');render(data);setStatus('Secure connection active. Signed in as '+data.owner+'.','ok')}
+catch(e){setStatus(e.message,'error')}
+}
+document.getElementById('connect').addEventListener('click',connect);
+document.getElementById('forget').addEventListener('click',()=>{localStorage.removeItem('afyaplate_ceo_endpoint');endpointInput.value='';setStatus('Saved connection cleared.','')});
+if(saved)connect();
+</script></body></html>
