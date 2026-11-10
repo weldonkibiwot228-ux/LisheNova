@@ -306,6 +306,20 @@ main{margin-top:0;padding-top:0}
 .recipe-body{padding:13px}.recipe-body h3{margin:5px 0;color:#24583e;font-size:1rem}.recipe-body>p{margin:0 0 10px;color:#6d7b70;font-size:.8rem;line-height:1.5}.recipe-meta{display:flex;justify-content:space-between;gap:8px;color:#6b796d;font-size:.7rem;font-weight:800}.recipe-details{border-top:1px solid #edf1eb;padding-top:9px;color:#52665a;font-size:.8rem}.recipe-details summary{color:#176b4d;font-weight:850;cursor:pointer}.recipe-details p{line-height:1.5}.recipe-details ol{padding-left:19px;line-height:1.6}.recipe-empty{padding:18px;text-align:center;color:#6d7b70;background:#f7faf5;border-radius:12px}
 @media(max-width:760px){.recipe-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.recipe-art{min-height:110px}}
 @media(max-width:420px){.recipe-grid{grid-template-columns:1fr}.recipe-art{min-height:100px}}
+
+/* My Shopping List — persistent household checklist */
+#my-shopping-list{scroll-margin-top:22px}
+#my-shopping-list .formgrid{gap:12px}
+#my-shopping-list .formgrid>div{min-width:0}
+#my-shopping-list .formgrid .full{width:100%}
+#myShoppingItems li{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#myShoppingItems .my-shop-label{flex:1;min-width:120px;font-weight:700;font-size:.9rem;overflow-wrap:anywhere}
+#myShoppingItems .my-shop-meta{display:block;color:var(--muted);font-size:.73rem;font-weight:500}
+#myShoppingItems li.is-checked{opacity:.62;background:#eff6ec}
+#myShoppingItems li.is-checked .my-shop-label{text-decoration:line-through}
+#myShoppingItems .my-shop-delete{border:0;background:#fff0ed;color:#9a3b2c;border-radius:9px;padding:8px 10px;font-weight:800;cursor:pointer}
+@media(max-width:600px){#my-shopping-list .formgrid{grid-template-columns:1fr}#my-shopping-list .formgrid>div{padding:0;border:0;background:transparent;box-shadow:none}}
+
 </style>
 </head>
 <body>
@@ -336,7 +350,7 @@ main{margin-top:0;padding-top:0}
 <nav class="mobile-tabs" aria-label="Quick navigation">
   <a class="active" href="#home"><span>⌂</span>Home</a>
   <a href="#planner"><span>▤</span>Plan</a>
-  <a href="#results"><span>🛒</span>Shopping</a>
+  <a href="#my-shopping-list"><span>🛒</span>My List</a>
   <a href="#marketplace"><span>🏪</span>Market</a>
   <a href="#about"><span>♙</span>About</a>
 </nav>
@@ -498,7 +512,25 @@ main{margin-top:0;padding-top:0}
     </div>
   </section>
 
-  <section class="card">
+  
+  <section class="card" id="my-shopping-list" aria-labelledby="myShoppingTitle">
+    <h2 class="section-title" id="myShoppingTitle">🛒 My Shopping List</h2>
+    <p class="sub">Keep track of what is missing at home, prepare before going to the market, and tick items as you buy them. Your list is saved in this browser on this device.</p>
+    <form id="myShoppingForm" class="formgrid">
+      <div><label for="myShopItem">What do you need?</label><input id="myShopItem" type="text" maxlength="80" placeholder="e.g. maize flour, cooking oil" required></div>
+      <div><label for="myShopQty">Quantity (optional)</label><input id="myShopQty" type="text" maxlength="40" placeholder="e.g. 2 kg, 1 litre"></div>
+      <div><label for="myShopCategory">Category</label><select id="myShopCategory"><option>Food & staples</option><option>Vegetables</option><option>Fruits</option><option>Meat & protein</option><option>Dairy & eggs</option><option>Household</option><option>Personal care</option><option>Other</option></select></div>
+      <div style="display:flex;align-items:end"><button class="btn full" type="submit" style="margin:0">＋ Add to my list</button></div>
+    </form>
+    <div class="shopping-tools" style="margin-top:18px">
+      <span class="shopping-count" id="myShoppingCount" aria-live="polite">0 items on your list</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="smallbtn" type="button" id="shareMyShopping">Share list</button><button class="smallbtn" type="button" id="clearBought">Clear bought</button></div>
+    </div>
+    <ul class="shopping" id="myShoppingItems" style="grid-template-columns:1fr"></ul>
+    <p class="note" id="myShoppingEmpty">Your list is empty. Add the things you have run out of at home.</p>
+  </section>
+
+<section class="card">
     <h2 class="section-title">🌿 What makes a balanced plate?</h2>
     <p class="sub">Use variety across the day. A helpful general guide for many healthy adults is:</p>
     <div class="mealgrid">
@@ -679,6 +711,24 @@ function filterShop(){
 shopSearch?.addEventListener('input',filterShop);
 shopFilters.forEach(btn=>btn.addEventListener('click',()=>{activeShopFilter=btn.dataset.shopFilter;shopFilters.forEach(b=>b.classList.toggle('active',b===btn));filterShop()}));
 
+
+/* AfyaPlate My Shopping List: saved locally and connected to generated meal plans. */
+(function(){
+ const KEY='afyaplate_my_shopping_list_v1',form=document.getElementById('myShoppingForm'),list=document.getElementById('myShoppingItems');
+ if(!form||!list)return;
+ let entries=[];try{const saved=JSON.parse(localStorage.getItem(KEY)||'[]');if(Array.isArray(saved))entries=saved;}catch(e){}
+ const categoryFor=name=>{const n=name.toLowerCase();if(/tomato|onion|sukuma|spinach|cabbage|carrot|kale|kunde|pumpkin leaves|coriander/.test(n))return 'Vegetables';if(/banana|orange|pawpaw|avocado|fruit|mango/.test(n))return 'Fruits';if(/milk|egg|cheese|yoghurt/.test(n))return 'Dairy & eggs';if(/chicken|beef|fish|omena|meat|beans|ndengu|lentil|peas|groundnut/.test(n))return 'Meat & protein';if(/soap|detergent|tissue|bleach|toothpaste|toothbrush|washing/.test(n))return 'Household';return 'Food & staples';};
+ const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(entries));}catch(e){alert('This browser could not save your list. Check available device storage.');}};
+ const render=()=>{list.replaceChildren();entries.forEach(item=>{const li=document.createElement('li');li.className=item.done?'is-checked':'';const check=document.createElement('input');check.type='checkbox';check.className='shopping-check';check.checked=!!item.done;check.setAttribute('aria-label','Mark '+item.name+' as bought');check.addEventListener('change',()=>{item.done=check.checked;persist();render();});const label=document.createElement('span');label.className='my-shop-label';label.textContent=item.name;const meta=document.createElement('span');meta.className='my-shop-meta';meta.textContent=item.category+(item.qty?' · '+item.qty:'');label.appendChild(meta);const del=document.createElement('button');del.type='button';del.className='my-shop-delete';del.textContent='Remove';del.setAttribute('aria-label','Remove '+item.name);del.addEventListener('click',()=>{entries=entries.filter(x=>x.id!==item.id);persist();render();});li.append(check,label,del);list.appendChild(li);});const remaining=entries.filter(x=>!x.done).length;document.getElementById('myShoppingCount').textContent=entries.length+' items · '+remaining+' still to buy';document.getElementById('myShoppingEmpty').hidden=entries.length>0;};
+ const add=(name,qty,category)=>{const clean=String(name||'').trim();if(!clean)return;const existing=entries.find(x=>x.name.toLowerCase()===clean.toLowerCase()&&!x.done);if(existing){if(qty)existing.qty=qty;if(category)existing.category=category;}else entries.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),name:clean,qty:qty||'',category:category||categoryFor(clean),done:false});};
+ form.addEventListener('submit',e=>{e.preventDefault();add(document.getElementById('myShopItem').value,document.getElementById('myShopQty').value,document.getElementById('myShopCategory').value);persist();render();form.reset();document.getElementById('myShopItem').focus();});
+ window.addEventListener('afyaplate:meal-plan-generated',e=>{(e.detail&&Array.isArray(e.detail.items)?e.detail.items:[]).forEach(name=>add(name,'',categoryFor(name)));persist();render();});
+ document.getElementById('shareMyShopping').addEventListener('click',()=>{const lines=entries.map(x=>(x.done?'[x] ':'[ ] ')+x.name+(x.qty?' — '+x.qty:'')+' ('+x.category+')');if(!lines.length){alert('Add items to your list before sharing.');return;}window.open('https://wa.me/?text='+encodeURIComponent('My AfyaPlate shopping list
+'+lines.join('
+')),'_blank','noopener');});
+ document.getElementById('clearBought').addEventListener('click',()=>{entries=entries.filter(x=>!x.done);persist();render();});
+ render();window.AfyaPlateShoppingList={addItems:items=>{(items||[]).forEach(name=>add(name,'',categoryFor(name)));persist();render();}};
+})();
 </script>
 </body>
 </html>
