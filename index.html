@@ -730,5 +730,56 @@ shopFilters.forEach(btn=>btn.addEventListener('click',()=>{activeShopFilter=btn.
  render();window.AfyaPlateShoppingList={addItems:items=>{(items||[]).forEach(name=>add(name,'',categoryFor(name)));persist();render();}};
 })();
 </script>
+
+<script>
+/* AFYAPLATE_SHOPPING_LIST_STANDALONE_FIX */
+(function(){
+ const start=function(){
+  const form=document.getElementById('myShoppingForm');
+  const list=document.getElementById('myShoppingItems');
+  if(!form||!list||form.dataset.shoppingReady==='yes')return;
+  form.dataset.shoppingReady='yes';
+  const KEY='afyaplate_my_shopping_list_v1';
+  let data=[];
+  try{const v=JSON.parse(localStorage.getItem(KEY)||'[]');if(Array.isArray(v))data=v;}catch(e){}
+  const byId=id=>document.getElementById(id);
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){byId('myShoppingCount').textContent='Unable to save on this device';}};
+  const render=()=>{
+   list.innerHTML='';
+   data.forEach((item,index)=>{
+    const li=document.createElement('li');li.className=item.done?'is-checked':'';
+    const cb=document.createElement('input');cb.type='checkbox';cb.className='shopping-check';cb.checked=!!item.done;cb.addEventListener('change',()=>{data[index].done=cb.checked;save();render();});
+    const name=document.createElement('span');name.className='my-shop-label';name.textContent=item.name;
+    const meta=document.createElement('span');meta.className='my-shop-meta';meta.textContent=(item.category||'Other')+(item.qty?' · '+item.qty:'');name.appendChild(meta);
+    const remove=document.createElement('button');remove.type='button';remove.className='my-shop-delete';remove.textContent='Remove';remove.addEventListener('click',()=>{data.splice(index,1);save();render();});
+    li.append(cb,name,remove);list.appendChild(li);
+   });
+   const count=byId('myShoppingCount');if(count)count.textContent=data.length+' items · '+data.filter(x=>!x.done).length+' still to buy';
+   const empty=byId('myShoppingEmpty');if(empty)empty.hidden=data.length>0;
+  };
+  const add=(name,qty,category)=>{
+   name=String(name||'').trim();if(!name)return;
+   const old=data.find(x=>x.name.toLowerCase()===name.toLowerCase()&&!x.done);
+   if(old){if(qty)old.qty=qty;if(category)old.category=category;}
+   else data.push({name,qty:qty||'',category:category||'Other',done:false});
+  };
+  form.addEventListener('submit',function(e){
+   e.preventDefault();e.stopImmediatePropagation();
+   add(byId('myShopItem').value,byId('myShopQty').value,byId('myShopCategory').value);
+   save();render();form.reset();byId('myShopItem').focus();
+  },true);
+  const share=byId('shareMyShopping');if(share)share.addEventListener('click',()=>{
+   if(!data.length){alert('Add items to your list before sharing.');return;}
+   const msg='My AfyaPlate shopping list\\n'+data.map(x=>(x.done?'[x] ':'[ ] ')+x.name+(x.qty?' — '+x.qty:'')+' ('+x.category+')').join('\\n');
+   window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank','noopener');
+  });
+  const clear=byId('clearBought');if(clear)clear.addEventListener('click',()=>{data=data.filter(x=>!x.done);save();render();});
+  window.addEventListener('afyaplate:meal-plan-generated',e=>{(e.detail&&Array.isArray(e.detail.items)?e.detail.items:[]).forEach(n=>add(n,'','Food & staples'));save();render();});
+  render();
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
+
 </body>
 </html>
