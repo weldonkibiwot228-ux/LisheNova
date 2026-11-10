@@ -17,16 +17,13 @@ button.secondary{background:var(--pale);color:var(--green)}.hint{font-size:.85re
 @media(max-width:650px){.grid{grid-template-columns:1fr}.panel{padding:16px}header{padding:18px 16px}}
 </style></head>
 <body>
-<header><div class="wrap"><a href="./">← AfyaPlate home</a><h1>👨🏽‍💼 CEO Dashboard</h1><p>Your private business overview and client feedback</p></div></header>
+<header id="ceoHeader" style="display:none"><div class="wrap"><a href="./">← AfyaPlate home</a><h1>👨🏽‍💼 CEO Dashboard</h1><p>Your private business overview and client feedback</p></div></header>
 <main>
-<section class="panel" id="afyaplate-analytics">
-<h2>📈 Website visitors & engagement</h2>
-<p class="hint">Google Analytics is connected to the AfyaPlate website. Open the official report to see active users, visitors, page views, traffic sources and engagement. New data may take up to 24–48 hours to appear in standard reports.</p>
-<a href="https://analytics.google.com/analytics/web/" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#145b43;color:white;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700">Open AfyaPlate Analytics ↗</a>
-<p class="hint" style="margin-top:10px">Measurement ID: G-HXH28R58Y5</p>
-</section>
 
-<section class="panel">
+
+<section class="panel" id="ownerGate">
+<h2>🔐 CEO-only access</h2>
+<p class="hint">This management area stays locked until Google confirms that you are signed in as weldonkibiwot228@gmail.com. Visitors cannot unlock it with a website password.</p>
 <div id="status" class="status">Dashboard setup: paste your Google Apps Script Web App URL below. Your feedback is not displayed until the private connection is configured.</div>
 <label for="endpoint">Private Google Apps Script Web App URL</label>
 <input id="endpoint" type="url" placeholder="https://script.google.com/macros/s/…/exec" autocomplete="url">
@@ -34,19 +31,29 @@ button.secondary{background:var(--pale);color:var(--green)}.hint{font-size:.85re
 <button id="forget" class="secondary" type="button">Clear saved connection</button>
 <p class="hint">Only the Google account weldonkibiwot228@gmail.com is authorized by the server. Do not paste a spreadsheet sharing link here.</p>
 </section>
+<div id="protectedDashboard" style="display:none">
+<section class="panel" id="afyaplate-analytics">
+<h2>📈 Website visitors & engagement</h2>
+<p class="hint">Google Analytics is connected to the AfyaPlate website. Open the official report to see active users, visitors, page views, traffic sources and engagement. New data may take up to 24–48 hours to appear in standard reports.</p>
+<a href="https://analytics.google.com/analytics/web/" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#145b43;color:white;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700">Open AfyaPlate Analytics ↗</a>
+<p class="hint" style="margin-top:10px">Measurement ID: G-HXH28R58Y5</p>
+</section>
 <section class="panel"><div class="grid">
 <div class="stat"><span>Total feedback submissions</span><strong id="total">—</strong></div>
 <div class="stat"><span>Average rating</span><strong id="average">—</strong></div>
 <div class="stat"><span>Latest response</span><strong id="latest">—</strong></div>
 </div></section>
-<section class="panel"><h2>Recent client feedback</h2><p class="hint" id="sheetname">Waiting for a secure connection.</p><div class="table-wrap" id="feedback"><div class="empty">Connect the private Google Sheet service to view real submissions.</div></div></section>
+<section class="panel"><h2>Recent client feedback</h2><p class="hint" id="sheetname">Waiting for a secure connection.</p><div class="table-wrap" id="feedback"><div class="empty">Connect the private Google Sheet service to view real submissions.</div></div></section></div>
 </main>
 <script>
+const OWNER_EMAIL='weldonkibiwot228@gmail.com';
 const endpointInput=document.getElementById('endpoint');
 const statusBox=document.getElementById('status');
 const saved=localStorage.getItem('afyaplate_ceo_endpoint');
 if(saved)endpointInput.value=saved;
 function setStatus(message,type){statusBox.textContent=message;statusBox.className='status '+(type||'')}
+function lockDashboard(){document.getElementById('ceoHeader').style.display='none';document.getElementById('protectedDashboard').style.display='none'}
+function unlockDashboard(){document.getElementById('ceoHeader').style.display='block';document.getElementById('protectedDashboard').style.display='block'}
 function jsonp(url){return new Promise((resolve,reject)=>{const callback='afyaplateCallback'+Date.now();const script=document.createElement('script');const timer=setTimeout(()=>{cleanup();reject(new Error('Connection timed out. Open the Apps Script URL in a Google browser tab, sign in and authorize it, then retry.'))},15000);function cleanup(){clearTimeout(timer);delete window[callback];script.remove()}window[callback]=data=>{cleanup();resolve(data)};script.onerror=()=>{cleanup();reject(new Error('Could not load the dashboard service. Check the deployment URL and Google sign-in.'))};script.src=url+(url.includes('?')?'&':'?')+'callback='+callback;document.body.appendChild(script)})}
 function cellValue(row,headers,patterns){for(let i=0;i<headers.length;i++){if(patterns.some(p=>p.test(String(headers[i]))))return row[i]||''}return ''}
 function render(data){
@@ -64,10 +71,11 @@ document.getElementById('feedback').innerHTML='<table><thead><tr>'+headers.map(h
 function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 async function connect(){const url=endpointInput.value.trim();if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(url)){setStatus('Enter the deployed Google Apps Script Web App URL ending in /exec.','error');return}
 localStorage.setItem('afyaplate_ceo_endpoint',url);setStatus('Connecting to Google and checking owner access…');
-try{const data=await jsonp(url);if(!data.ok)throw new Error(data.error||'The service rejected this account.');render(data);setStatus('Secure connection active. Signed in as '+data.owner+'.','ok')}
-catch(e){setStatus(e.message,'error')}
+try{const data=await jsonp(url);if(!data.ok)throw new Error(data.error||'Google denied access.');if(String(data.owner||'').toLowerCase()!==OWNER_EMAIL)throw new Error('Access denied. Sign in with the founder Google account.');render(data);unlockDashboard();setStatus('Founder access verified. Signed in as '+data.owner+'.','ok')}
+catch(e){lockDashboard();setStatus(e.message,'error')}
 }
 document.getElementById('connect').addEventListener('click',connect);
 document.getElementById('forget').addEventListener('click',()=>{localStorage.removeItem('afyaplate_ceo_endpoint');endpointInput.value='';setStatus('Saved connection cleared.','')});
+lockDashboard();
 if(saved)connect();
 </script></body></html>
