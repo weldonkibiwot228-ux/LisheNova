@@ -62,7 +62,7 @@ async function verifyCEO(user){
 async function loadFeedback(){
  $('sheetname').textContent='Loading private customer feedback…';
  let data,error,table='customer_feedback';
- ({data,error}=await db.from(table).select('*').order('created_at',{ascending:false}).limit(100));
+ ({data,error}=await db.from(table).select('*').limit(100));
  if(error){table='client_feedback';({data,error}=await db.from(table).select('*').order('created_at',{ascending:false}).limit(100));}
  if(error){$('sheetname').textContent='Feedback table access error: '+error.message;$('feedback').innerHTML='<div class="empty">Check that customer_feedback exists and CEO read access is enabled.</div>';return}
  data=data||[];$('total').textContent=data.length;
