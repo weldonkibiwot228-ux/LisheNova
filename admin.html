@@ -23,13 +23,15 @@ button.secondary{background:var(--pale);color:var(--green)}.hint{font-size:.85re
 
 <section class="panel" id="ownerGate">
 <h2>🔐 CEO-only access</h2>
-<p class="hint">This management area stays locked until Google confirms that you are signed in as weldonkibiwot228@gmail.com. Visitors cannot unlock it with a website password.</p>
-<div id="status" class="status">Dashboard setup: paste your Google Apps Script Web App URL below. Your feedback is not displayed until the private connection is configured.</div>
-<label for="endpoint">Private Google Apps Script Web App URL</label>
-<input id="endpoint" type="url" placeholder="https://script.google.com/macros/s/…/exec" autocomplete="url">
-<button id="connect">Connect securely</button>
-<button id="forget" class="secondary" type="button">Clear saved connection</button>
-<p class="hint">Only the Google account weldonkibiwot228@gmail.com is authorized by the server. Do not paste a spreadsheet sharing link here.</p>
+<p class="hint">Sign in with the AfyaPlate CEO account. Access is verified against the protected ceo_admins table.</p>
+<div id="status" class="status">Sign in to open your private dashboard.</div>
+<form id="loginForm">
+<label for="ceoEmail">CEO email</label><input id="ceoEmail" type="email" required autocomplete="username" placeholder="Your Supabase Auth email">
+<label for="ceoPassword">Password</label><input id="ceoPassword" type="password" required autocomplete="current-password" placeholder="Your Supabase password">
+<button id="connect" type="submit">Sign in securely</button>
+</form>
+<button id="logout" class="secondary" type="button" hidden>Sign out</button>
+<p class="hint">Only accounts registered in the Supabase ceo_admins table can open this dashboard.</p>
 </section>
 <div id="protectedDashboard" style="display:none">
 <section class="panel" id="afyaplate-analytics">
@@ -43,39 +45,70 @@ button.secondary{background:var(--pale);color:var(--green)}.hint{font-size:.85re
 <div class="stat"><span>Average rating</span><strong id="average">—</strong></div>
 <div class="stat"><span>Latest response</span><strong id="latest">—</strong></div>
 </div></section>
-<section class="panel"><h2>Recent client feedback</h2><p class="hint" id="sheetname">Waiting for a secure connection.</p><div class="table-wrap" id="feedback"><div class="empty">Connect the private Google Sheet service to view real submissions.</div></div></section></div>
+<section class="panel"><h2>Recent client feedback</h2><p class="hint" id="sheetname">Waiting for a secure connection.</p><div class="table-wrap" id="feedback"><div class="empty">Connect the private Google Sheet service to view real submissions.</div></div></section><section class="panel"><h2>Community posts awaiting approval</h2><p class="hint" id="communityStatus">Waiting for CEO sign-in.</p><div id="pendingPosts"></div></section></div>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
 <script>
-const OWNER_EMAIL='weldonkibiwot228@gmail.com';
-const endpointInput=document.getElementById('endpoint');
-const statusBox=document.getElementById('status');
-const saved=localStorage.getItem('afyaplate_ceo_endpoint');
-if(saved)endpointInput.value=saved;
-function setStatus(message,type){statusBox.textContent=message;statusBox.className='status '+(type||'')}
-function lockDashboard(){document.getElementById('ceoHeader').style.display='none';document.getElementById('protectedDashboard').style.display='none'}
-function unlockDashboard(){document.getElementById('ceoHeader').style.display='block';document.getElementById('protectedDashboard').style.display='block'}
-function jsonp(url){return new Promise((resolve,reject)=>{const callback='afyaplateCallback'+Date.now();const script=document.createElement('script');const timer=setTimeout(()=>{cleanup();reject(new Error('Connection timed out. Open the Apps Script URL in a Google browser tab, sign in and authorize it, then retry.'))},15000);function cleanup(){clearTimeout(timer);delete window[callback];script.remove()}window[callback]=data=>{cleanup();resolve(data)};script.onerror=()=>{cleanup();reject(new Error('Could not load the dashboard service. Check the deployment URL and Google sign-in.'))};script.src=url+(url.includes('?')?'&':'?')+'callback='+callback;document.body.appendChild(script)})}
-function cellValue(row,headers,patterns){for(let i=0;i<headers.length;i++){if(patterns.some(p=>p.test(String(headers[i]))))return row[i]||''}return ''}
-function render(data){
-document.getElementById('total').textContent=data.total??0;
-const ratingIndexes=data.headers.map((h,i)=>/rating|rate|stars|score/i.test(String(h))?i:-1).filter(i=>i>=0);
-const ratings=data.rows.map(r=>ratingIndexes.map(i=>Number(String(r[i]).replace(/[^0-9.]/g,''))).find(n=>Number.isFinite(n)&&n>0&&n<=5)).filter(Boolean);
-document.getElementById('average').textContent=ratings.length?(ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1)+'/5':'—';
-const dateIndex=data.headers.findIndex(h=>/timestamp|date|time/i.test(String(h)));
-document.getElementById('latest').textContent=data.rows.length&&dateIndex>=0?(data.rows[0][dateIndex]||'Available'):'—';
-document.getElementById('sheetname').textContent='Source: '+(data.sheetName||'Feedback response sheet')+' · Updated '+new Date(data.updatedAt).toLocaleString();
-if(!data.rows.length){document.getElementById('feedback').innerHTML='<div class="empty">No feedback submissions found yet.</div>';return}
-const headers=data.headers;const rows=data.rows.slice(0,50);
-document.getElementById('feedback').innerHTML='<table><thead><tr>'+headers.map(h=>'<th>'+escapeHtml(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+headers.map((h,i)=>'<td>'+escapeHtml(r[i]||'')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+const db=window.afyaSupabase,$=id=>document.getElementById(id);
+function status(message,type){$('status').textContent=message;$('status').className='status '+(type||'')}
+function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function unlock(){ $('ceoHeader').style.display='block';$('protectedDashboard').style.display='block';$('ownerGate').querySelector('form').hidden=true;$('logout').hidden=false; }
+function lock(){ $('ceoHeader').style.display='none';$('protectedDashboard').style.display='none';$('ownerGate').querySelector('form').hidden=false;$('logout').hidden=true; }
+async function verifyCEO(user){
+ const {data,error}=await db.from('ceo_admins').select('user_id').eq('user_id',user.id).maybeSingle();
+ if(error)throw error;if(!data)throw new Error('This account is not registered as an AfyaPlate CEO administrator.');
 }
-function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-async function connect(){const url=endpointInput.value.trim();if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(url)){setStatus('Enter the deployed Google Apps Script Web App URL ending in /exec.','error');return}
-localStorage.setItem('afyaplate_ceo_endpoint',url);setStatus('Connecting to Google and checking owner access…');
-try{const data=await jsonp(url);if(!data.ok)throw new Error(data.error||'Google denied access.');if(String(data.owner||'').toLowerCase()!==OWNER_EMAIL)throw new Error('Access denied. Sign in with the founder Google account.');render(data);unlockDashboard();setStatus('Founder access verified. Signed in as '+data.owner+'.','ok')}
-catch(e){lockDashboard();setStatus(e.message,'error')}
+async function loadFeedback(){
+ $('sheetname').textContent='Loading private customer feedback…';
+ let data,error,table='customer_feedback';
+ ({data,error}=await db.from(table).select('*').order('created_at',{ascending:false}).limit(100));
+ if(error){table='client_feedback';({data,error}=await db.from(table).select('*').order('created_at',{ascending:false}).limit(100));}
+ if(error){$('sheetname').textContent='Feedback table access error: '+error.message;$('feedback').innerHTML='<div class="empty">Check that customer_feedback exists and CEO read access is enabled.</div>';return}
+ data=data||[];$('total').textContent=data.length;
+ const ratingValues=data.map(row=>{const k=Object.keys(row).find(k=>/rating|stars|score/i.test(k));return k?Number(row[k]):NaN}).filter(n=>Number.isFinite(n)&&n>0&&n<=5);
+ $('average').textContent=ratingValues.length?(ratingValues.reduce((a,b)=>a+b,0)/ratingValues.length).toFixed(1)+'/5':'—';
+ const first=data[0]||{};const dateKey=Object.keys(first).find(k=>/created_at|timestamp|date|time/i.test(k));
+ $('latest').textContent=dateKey&&first[dateKey]?new Date(first[dateKey]).toLocaleString():'—';
+ $('sheetname').textContent='Source: '+table+' · '+data.length+' record(s)';
+ if(!data.length){$('feedback').innerHTML='<div class="empty">No feedback submissions found yet.</div>';return}
+ const keys=[...new Set(data.flatMap(r=>Object.keys(r)))];
+ $('feedback').innerHTML='<table><thead><tr>'+keys.map(k=>'<th>'+escapeHtml(k)+'</th>').join('')+'</tr></thead><tbody>'+data.slice(0,50).map(r=>'<tr>'+keys.map(k=>'<td>'+escapeHtml(typeof r[k]==='object'?JSON.stringify(r[k]):r[k])+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
 }
-document.getElementById('connect').addEventListener('click',connect);
-document.getElementById('forget').addEventListener('click',()=>{localStorage.removeItem('afyaplate_ceo_endpoint');endpointInput.value='';setStatus('Saved connection cleared.','')});
-lockDashboard();
-if(saved)connect();
+function postCard(post){
+ const el=document.createElement('article');el.className='panel';
+ const body=document.createElement('div');body.innerHTML='<strong>'+escapeHtml(post.name)+'</strong> · '+escapeHtml(post.topic)+'<p>'+escapeHtml(post.message)+'</p><small>'+escapeHtml(post.created_at||'')+'</small>';
+ const actions=document.createElement('div');actions.className='actions';
+ ['approved','rejected'].forEach(decision=>{const b=document.createElement('button');b.type='button';b.textContent=decision==='approved'?'Approve':'Reject';b.className=decision==='approved'?'':'secondary';b.addEventListener('click',()=>moderate(post.id,decision));actions.appendChild(b)});
+ el.append(body,actions);return el;
+}
+async function loadPending(){
+ $('communityStatus').textContent='Loading posts awaiting review…';
+ const {data,error}=await db.from('community_posts').select('*').eq('status','pending').order('created_at',{ascending:false}).limit(100);
+ if(error){$('communityStatus').textContent='Community access error: '+error.message;return}
+ $('pendingPosts').replaceChildren();
+ if(!data.length)$('pendingPosts').innerHTML='<div class="empty">No posts waiting for approval.</div>';
+ else data.forEach(p=>$('pendingPosts').appendChild(postCard(p)));
+ $('communityStatus').textContent=data.length+' post(s) awaiting review.';
+}
+async function moderate(id,decision){
+ const {error}=await db.from('community_posts').update({status:decision,reviewed_at:new Date().toISOString()}).eq('id',id);
+ if(error){$('communityStatus').textContent='Could not update post: '+error.message;return}
+ await loadPending();$('communityStatus').textContent='Post '+decision+'. '+$('communityStatus').textContent;
+}
+async function openDashboard(user){
+ await verifyCEO(user);unlock();status('CEO access verified for '+user.email+'.','ok');
+ await Promise.all([loadFeedback(),loadPending()]);
+}
+$('loginForm').addEventListener('submit',async e=>{
+ e.preventDefault();const b=$('connect');b.disabled=true;status('Signing in and verifying CEO access…');
+ try{if(!db)throw new Error('Supabase did not load. Refresh the page.');const {data,error}=await db.auth.signInWithPassword({email:$('ceoEmail').value.trim(),password:$('ceoPassword').value});if(error)throw error;await openDashboard(data.user);}
+ catch(err){await db?.auth.signOut();lock();status(err.message||'Sign-in failed.','error')}
+ finally{b.disabled=false}
+});
+$('logout').addEventListener('click',async()=>{await db.auth.signOut();lock();status('You have signed out.','')});
+lock();
+(async()=>{if(!db){status('Supabase did not load. Refresh the page.','error');return}
+ const {data}=await db.auth.getSession();if(data.session){try{await openDashboard(data.session.user)}catch(e){await db.auth.signOut();lock();status(e.message,'error')}}
+})();
 </script></body></html>
