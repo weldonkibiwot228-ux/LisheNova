@@ -100,7 +100,7 @@ $('postForm').addEventListener('submit',async e=>{
 });
 $('message').addEventListener('input',e=>$('charCount').textContent=e.target.value.length+' / 700 characters');
 $('refresh').addEventListener('click',loadFeed);
-$('loadPending').addEventListener('click',()=>location.href='./admin.html');
+
 $('year').textContent=new Date().getFullYear();
 loadFeed();
 </script>
