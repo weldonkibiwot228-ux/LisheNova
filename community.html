@@ -56,11 +56,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:0 16px 30px}
 <div class="panel">
 <details>
 <summary>CEO moderation</summary>
-<p class="muted">For the AfyaPlate owner only. Enter the admin key configured in the Apps Script project.</p>
-<label for="adminKey">CEO admin key</label><input id="adminKey" type="password" autocomplete="off" placeholder="Enter your private key">
-<div class="actions"><button id="loadPending" type="button">Load pending posts</button></div>
-<div class="status" id="adminStatus" role="status" aria-live="polite"></div>
-<div id="pending"></div>
+<p class="muted">CEO moderation is protected in the private AfyaPlate dashboard.</p><a class="secondary" href="./admin.html">Open CEO Dashboard →</a>
 </details>
 </div>
 <div class="panel">
@@ -70,53 +66,42 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:0 16px 30px}
 </aside>
 </main>
 <footer>© <span id="year"></span> AfyaPlate · Community posts are moderated before publication.</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
 <script>
-/* Paste your deployed Apps Script Web App URL in this setting or enter it when prompted. */
-const DEFAULT_ENDPOINT='';
-const endpoint=localStorage.getItem('afyaplate_community_endpoint')||DEFAULT_ENDPOINT;
-function jsonp(params){
- return new Promise((resolve,reject)=>{
-  if(!endpoint){reject(new Error('Community service is not connected yet. Complete the Google Apps Script setup first.'));return}
-  const url=new URL(endpoint);Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,v));
-  const cb='afyaplateCommunity'+Date.now()+Math.floor(Math.random()*1000);url.searchParams.set('callback',cb);
-  const script=document.createElement('script');const timer=setTimeout(()=>{cleanup();reject(new Error('The community service did not respond. Check the Apps Script deployment URL.'))},15000);
-  function cleanup(){clearTimeout(timer);delete window[cb];script.remove()}
-  window[cb]=data=>{cleanup();resolve(data)};script.onerror=()=>{cleanup();reject(new Error('Could not reach the community service.'))};script.src=url.toString();document.body.appendChild(script);
- });
-}
-function safe(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function dateLabel(value){const d=new Date(value);return Number.isNaN(d.getTime())?'Recently':d.toLocaleString()}
-function postCard(post,admin){
- const el=document.createElement('article');el.className='post';
- el.innerHTML='<div class="meta">'+safe(post.name)+' · '+safe(dateLabel(post.createdAt))+'</div><span class="topic">'+safe(post.topic)+'</span><p>'+safe(post.message)+'</p>';
- if(admin){const actions=document.createElement('div');actions.className='admin-actions';['approve','reject'].forEach(action=>{const b=document.createElement('button');b.type='button';b.className=action;b.textContent=action==='approve'?'Approve':'Reject';b.addEventListener('click',()=>moderate(post.id,action));actions.appendChild(b)});el.appendChild(actions)}
- return el;
-}
+const db=window.afyaSupabase;
+const $=id=>document.getElementById(id);
+function safe(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function dateLabel(v){const d=new Date(v);return Number.isNaN(d.getTime())?'Recently':d.toLocaleString()}
+function card(p){const el=document.createElement('article');el.className='post';el.innerHTML='<div class="meta">'+safe(p.name)+' · '+safe(dateLabel(p.created_at))+'</div><span class="topic">'+safe(p.topic)+'</span><p>'+safe(p.message)+'</p>';return el}
 async function loadFeed(){
- const feed=document.getElementById('feed'),status=document.getElementById('feedStatus');status.textContent='Loading approved posts…';
- try{const data=await jsonp({action:'feed'});if(!data.ok)throw new Error(data.error||'Could not load posts.');feed.replaceChildren();if(!data.posts.length){feed.innerHTML='<div class="empty">No approved posts yet. Be the first to share an idea!</div>'}else data.posts.forEach(p=>feed.appendChild(postCard(p,false)));status.textContent=data.posts.length+' approved post(s).'}
- catch(e){status.textContent=e.message;feed.innerHTML='<div class="empty">The community feed will appear once the service is connected.</div>'}
+ $('feedStatus').textContent='Loading approved posts…';
+ try{
+  if(!db)throw new Error('Supabase could not start. Refresh this page and try again.');
+  const {data,error}=await db.from('community_posts').select('id,name,topic,message,created_at').eq('status','approved').order('created_at',{ascending:false}).limit(50);
+  if(error)throw error;
+  $('feed').replaceChildren();
+  if(!data.length)$('feed').innerHTML='<div class="empty">No approved posts yet. Be the first to share an idea!</div>';
+  else data.forEach(p=>$('feed').appendChild(card(p)));
+  $('feedStatus').textContent=data.length+' approved post(s).';
+ }catch(e){$('feedStatus').textContent=e.message||'Could not load the community feed.';$('feed').innerHTML='<div class="empty">The community feed is temporarily unavailable.</div>'}
 }
-document.getElementById('postForm').addEventListener('submit',async e=>{
- e.preventDefault();const button=document.getElementById('submitPost'),status=document.getElementById('submitStatus');button.disabled=true;status.textContent='Submitting your post for review…';
- try{const data=await jsonp({action:'submit',name:document.getElementById('displayName').value.trim(),topic:document.getElementById('topic').value,message:document.getElementById('message').value.trim()});if(!data.ok)throw new Error(data.error||'Submission failed.');e.target.reset();document.getElementById('charCount').textContent='0 / 700 characters';status.textContent='Thank you! Your post has been sent for CEO review and is not public yet.'}
- catch(err){status.textContent=err.message}
- finally{button.disabled=false}
+$('postForm').addEventListener('submit',async e=>{
+ e.preventDefault();const b=$('submitPost'),s=$('submitStatus');b.disabled=true;s.textContent='Submitting your post for CEO review…';
+ try{
+  if(!db)throw new Error('Supabase is not connected. Please refresh and try again.');
+  const row={name:$('displayName').value.trim(),topic:$('topic').value,message:$('message').value.trim(),status:'pending'};
+  const {error}=await db.from('community_posts').insert(row);
+  if(error)throw error;
+  e.target.reset();$('charCount').textContent='0 / 700 characters';
+  s.textContent='Thank you! Your post is awaiting CEO approval and is not public yet.';
+ }catch(err){s.textContent=err.message||'Submission failed.'}
+ finally{b.disabled=false}
 });
-document.getElementById('message').addEventListener('input',e=>document.getElementById('charCount').textContent=e.target.value.length+' / 700 characters');
-document.getElementById('refresh').addEventListener('click',loadFeed);
-async function loadPending(){
- const key=document.getElementById('adminKey').value.trim(),box=document.getElementById('pending'),status=document.getElementById('adminStatus');status.textContent='Checking pending posts…';
- try{const data=await jsonp({action:'pending',adminKey:key});if(!data.ok)throw new Error(data.error||'Could not load pending posts.');box.replaceChildren();if(!data.posts.length)box.innerHTML='<div class="empty">No posts waiting for review.</div>';else data.posts.forEach(p=>box.appendChild(postCard(p,true)));status.textContent=data.posts.length+' post(s) awaiting review.'}
- catch(e){status.textContent=e.message}
-}
-async function moderate(id,decision){
- const key=document.getElementById('adminKey').value.trim(),status=document.getElementById('adminStatus');status.textContent='Saving moderation decision…';
- try{const data=await jsonp({action:'moderate',adminKey:key,id,status:decision});if(!data.ok)throw new Error(data.error||'Could not update post.');status.textContent='Post '+decision+'d.';await loadPending();if(decision==='approve')loadFeed()}
- catch(e){status.textContent=e.message}
-}
-document.getElementById('loadPending').addEventListener('click',loadPending);
-document.getElementById('year').textContent=new Date().getFullYear();
-if(endpoint)loadFeed();else{document.getElementById('feedStatus').textContent='Setup required: connect the Apps Script Web App URL.'}
+$('message').addEventListener('input',e=>$('charCount').textContent=e.target.value.length+' / 700 characters');
+$('refresh').addEventListener('click',loadFeed);
+$('loadPending').addEventListener('click',()=>location.href='./admin.html');
+$('year').textContent=new Date().getFullYear();
+loadFeed();
 </script>
 </body></html>
