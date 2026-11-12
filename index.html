@@ -320,6 +320,53 @@ main{margin-top:0;padding-top:0}
 #myShoppingItems .my-shop-delete{border:0;background:#fff0ed;color:#9a3b2c;border-radius:9px;padding:8px 10px;font-weight:800;cursor:pointer}
 @media(max-width:600px){#my-shopping-list .formgrid{grid-template-columns:1fr}#my-shopping-list .formgrid>div{padding:0;border:0;background:transparent;box-shadow:none}}
 
+
+/* November 2026 homepage redesign — visual layer only */
+.app-home{background:radial-gradient(ellipse at 88% 12%,#347d58 0,transparent 35%),linear-gradient(135deg,#103f2d 0%,#175b40 58%,#1b6949 100%);padding:22px 22px 54px}
+.app-topbar{max-width:1120px}
+.app-nav-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.app-nav-link{color:#e2f0e6;text-decoration:none;font-size:.83rem;font-weight:750}
+.app-nav-link:hover,.marketplace-nav:hover{color:#d6efb8}
+.marketplace-nav{color:#f0f7ef!important}
+.app-intro{max-width:1120px;margin:58px auto 0}
+.app-intro h1{font-size:clamp(2.5rem,6vw,4.4rem);max-width:780px;letter-spacing:-2px}
+.app-intro h1 span{font-size:.48em;max-width:650px;line-height:1.35}
+.app-subtitle{font-size:1.04rem;max-width:650px;line-height:1.7}
+.app-hero-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 22px}
+.app-primary-cta,.app-secondary-cta{display:inline-flex;align-items:center;justify-content:center;gap:18px;min-height:48px;padding:12px 18px;border-radius:13px;text-decoration:none;font-weight:850;font-size:.9rem}
+.app-primary-cta{background:#d9edbd;color:#174b35;box-shadow:0 8px 22px #092d1b38}
+.app-primary-cta span{font-size:1.15rem}
+.app-secondary-cta{border:1px solid #ffffff60;color:#fff;background:#ffffff0d}
+.category-row{max-width:1120px}
+.picked-heading,.featured-meal{max-width:1120px}
+.feature-strip.app-features{max-width:1120px;position:relative;z-index:2}
+.membership-promo{max-width:1076px;margin:12px auto 28px;padding:22px 25px;display:flex;align-items:center;gap:18px;background:linear-gradient(110deg,#f1f6e8,#fff);border:1px solid #e0e9d8;border-radius:22px;box-shadow:0 14px 34px #183f2a0c}
+.membership-mark{width:48px;height:48px;flex:0 0 48px;border-radius:16px;display:grid;place-items:center;background:#e1efcf;color:#286344;font-size:1.5rem}
+.membership-copy{flex:1;min-width:0}
+.membership-kicker{margin:0 0 4px;color:#66824f;font-size:.66rem;font-weight:900;letter-spacing:1.3px}
+.membership-copy h2{margin:0;color:#1c5038;font-size:1.2rem;letter-spacing:-.3px}
+.membership-copy p:last-child{margin:5px 0 0;color:#65776a;font-size:.86rem;line-height:1.5}
+.membership-copy strong{color:#1b6847}
+.membership-cta{flex:0 0 auto;display:inline-flex;align-items:center;gap:12px;padding:12px 15px;border-radius:12px;background:#195d41;color:#fff;text-decoration:none;font-size:.82rem;font-weight:850}
+@media(max-width:700px){
+ .app-home{padding:17px 16px 43px}
+ .app-topbar{align-items:flex-start}
+ .app-nav-actions{justify-content:flex-end;gap:8px 12px;max-width:70%}
+ .app-nav-link{font-size:.72rem}
+ .app-nav-actions .marketplace-nav{font-size:.67rem}
+ .app-intro{margin-top:39px}
+ .app-intro h1{font-size:2.45rem;letter-spacing:-1.3px}
+ .app-intro h1 span{font-size:.53em}
+ .app-hero-actions{gap:9px}
+ .app-primary-cta,.app-secondary-cta{min-height:44px;padding:10px 13px;font-size:.82rem}
+ .membership-promo{margin:14px 16px 24px;padding:17px;gap:12px;flex-wrap:wrap}
+ .membership-mark{width:40px;height:40px;flex-basis:40px}
+ .membership-copy{flex:1 1 calc(100% - 60px)}
+ .membership-copy h2{font-size:1.08rem}
+ .membership-copy p:last-child{font-size:.81rem}
+ .membership-cta{width:100%;justify-content:center}
+}
+
 </style>
 <!-- AfyaPlate Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXH28R58Y5"></script>
@@ -334,13 +381,21 @@ main{margin-top:0;padding-top:0}
 <header class="app-home" id="home">
   <div class="app-topbar">
     <a class="brand app-brand" href="#home" aria-label="AfyaPlate home"><span class="logo">🥑</span><span>AfyaPlate</span></a>
-    <a class="marketplace-nav" href="#marketplace">🛍️ MARKETPLACE</a>
-    <a class="marketplace-nav" href="./community.html">💬 COMMUNITY</a>
+    <div class="app-nav-actions">
+      <a class="app-nav-link" href="#planner">Meal planner</a>
+      <a class="app-nav-link" href="#recipes">Recipes</a>
+      <a class="marketplace-nav" href="#marketplace">🛍️ MARKETPLACE</a>
+      <a class="marketplace-nav" href="./community.html">💬 COMMUNITY</a>
+    </div>
   </div>
   <div class="app-intro">
     <p class="app-kicker">MADE FOR EVERYDAY KENYAN HOMES</p>
     <h1>Hello! <span>What should we prepare today?</span></h1>
-    <p class="app-subtitle">Find familiar meals, plan around your budget and make shopping simpler.</p>
+    <p class="app-subtitle">Plan nourishing everyday meals, make your food budget go further and shop with confidence — with Kenyan food at the heart of it.</p>
+    <div class="app-hero-actions">
+      <a class="app-primary-cta" href="#planner">Start planning <span aria-hidden="true">↗</span></a>
+      <a class="app-secondary-cta" href="#recipes">Explore recipes</a>
+    </div>
     <label class="recipe-search" for="recipeSearch"><span aria-hidden="true">⌕</span><input id="recipeSearch" type="search" placeholder="Search Kenyan meals and ingredients..." autocomplete="off"></label>
   </div>
   <div class="category-row" aria-label="Browse meal types">
@@ -366,6 +421,15 @@ main{margin-top:0;padding-top:0}
   <div class="feature"><div class="feature-icon">💸</div><div><b>Make your budget work</b><span>Choose a daily amount that suits your household.</span></div></div>
   <div class="feature"><div class="feature-icon">🥘</div><div><b>Enjoy local inspiration</b><span>Explore familiar foods and practical combinations.</span></div></div>
   <div class="feature"><div class="feature-icon">🛒</div><div><b>Shop with a plan</b><span>Bring your ingredients together in one list.</span></div></div>
+</section>
+<section class="membership-promo" id="membership">
+  <div class="membership-mark" aria-hidden="true">✦</div>
+  <div class="membership-copy">
+    <p class="membership-kicker">A LITTLE MORE WITH AFYAPLATE</p>
+    <h2>Make room for more with membership</h2>
+    <p>Join the AfyaPlate membership for <strong>KSh 100</strong>. See the membership details and available member access before you join.</p>
+  </div>
+  <a class="membership-cta" href="#about">Explore membership <span aria-hidden="true">→</span></a>
 </section>
 <main>
   <section class="card" id="kenyan-meal-planning-guide">
