@@ -1,5 +1,5 @@
 /**
- * AfyaPlate CEO Dashboard — private server-side feedback viewer.
+ * LisheNova CEO Dashboard — private server-side feedback viewer.
  *
  * IMPORTANT DEPLOYMENT SETTINGS:
  * 1. Deploy as a Web app.
@@ -22,10 +22,10 @@ function doGet() {
   if (email !== AFYAPLATE_OWNER_EMAIL) {
     return HtmlService.createHtmlOutput(
       '<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">' +
-      '<title>Access denied | AfyaPlate</title></head><body style="font:16px system-ui;padding:32px;color:#19352a">' +
-      '<h1>AfyaPlate CEO Dashboard</h1><p>Access denied. Sign in with the founder Google account.</p>' +
+      '<title>Access denied | LisheNova</title></head><body style="font:16px system-ui;padding:32px;color:#19352a">' +
+      '<h1>LisheNova CEO Dashboard</h1><p>Access denied. Sign in with the founder Google account.</p>' +
       '</body></html>'
-    ).setTitle('Access denied | AfyaPlate');
+    ).setTitle('Access denied | LisheNova');
   }
 
   try {
@@ -61,7 +61,7 @@ function doGet() {
     const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AfyaPlate CEO Dashboard</title>
+<title>LisheNova CEO Dashboard</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f7f8f2;color:#19352a;font:15px/1.5 system-ui,Arial,sans-serif}
 header{background:#174f35;color:white;padding:24px 18px}main{max-width:1050px;margin:auto;padding:22px 16px 48px}
@@ -73,7 +73,7 @@ h1{margin:0 0 5px;font-size:clamp(1.6rem,5vw,2.3rem)}header p{margin:0;color:#d8
 .empty{padding:20px;color:#687b70}
 @media(max-width:600px){.stats{grid-template-columns:1fr}.panel{padding:14px}}
 </style></head><body>
-<header><h1>AfyaPlate CEO Dashboard</h1><p>Founder access verified · ${esc(email)}</p></header>
+<header><h1>LisheNova CEO Dashboard</h1><p>Founder access verified · ${esc(email)}</p></header>
 <main>
 <section class="panel"><div class="stats">
 <div class="stat"><span>Total feedback submissions</span><strong>${Math.max(0, values.length - 1)}</strong></div>
@@ -84,14 +84,14 @@ h1{margin:0 0 5px;font-size:clamp(1.6rem,5vw,2.3rem)}header p{margin:0;color:#d8
 </main></body></html>`;
 
     return HtmlService.createHtmlOutput(html)
-      .setTitle('AfyaPlate CEO Dashboard')
+      .setTitle('LisheNova CEO Dashboard')
       .addMetaTag('viewport', 'width=device-width, initial-scale=1');
   } catch (error) {
     const message = String(error && error.message ? error.message : error)
       .replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
     return HtmlService.createHtmlOutput(
-      '<h1>AfyaPlate dashboard could not load feedback</h1><p>' + message + '</p>' +
+      '<h1>LisheNova dashboard could not load feedback</h1><p>' + message + '</p>' +
       '<p>Check that the founder account has permission to open the feedback spreadsheet.</p>'
-    ).setTitle('AfyaPlate dashboard error');
+    ).setTitle('LisheNova dashboard error');
   }
 }
