@@ -1,3 +1,3 @@
-# afyaplate
-AfyaPlate_Good Budget meal planner 
-AfyaPlate website deployment update
+# lishenova
+LisheNova_Good Budget meal planner 
+LisheNova website deployment update
