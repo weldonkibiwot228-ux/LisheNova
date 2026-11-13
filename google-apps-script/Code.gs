@@ -1,5 +1,5 @@
 /**
- * AfyaPlate CEO Dashboard — secure Google Apps Script data endpoint.
+ * LisheNova CEO Dashboard — secure Google Apps Script data endpoint.
  *
  * Deploy as a Web App:
  *   Execute as: User accessing the web app
@@ -16,7 +16,7 @@ function doGet(e) {
   try {
     const email = (Session.getActiveUser().getEmail() || "").toLowerCase();
     if (email !== ALLOWED_EMAIL.toLowerCase()) {
-      throw new Error("Access denied. Sign in with the AfyaPlate owner Google account.");
+      throw new Error("Access denied. Sign in with the LisheNova owner Google account.");
     }
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
     const sheets = ss.getSheets();

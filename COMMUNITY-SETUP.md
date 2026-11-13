@@ -1,4 +1,4 @@
-# AfyaPlate Community setup
+# LisheNova Community setup
 
 ## What is included
 - `community.html`: separate public community page; it does not alter the meal planner.
@@ -8,7 +8,7 @@
 ## Connect the Google Sheet
 1. Open the Google spreadsheet you want to use for community submissions.
 2. Copy its spreadsheet ID from the URL (the long value between `/d/` and `/edit`).
-3. Open the Apps Script project you use for AfyaPlate, or create a separate project at https://script.google.com/.
+3. Open the Apps Script project you use for LisheNova, or create a separate project at https://script.google.com/.
 4. Add a new script file and paste the complete contents of `community-backend.gs`.
 5. In Project Settings > Script properties, add:
    - `SHEET_ID`: the spreadsheet ID from step 2.

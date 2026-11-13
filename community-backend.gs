@@ -1,5 +1,5 @@
 /**
- * AfyaPlate Community backend
+ * LisheNova Community backend
  * Deploy this Apps Script as a Web App: Execute as Me; Who has access: Anyone.
  * Set Script Properties:
  *   SHEET_ID = your Google spreadsheet ID
