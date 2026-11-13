@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://weldonkibiwot228-ux.github.io/lishenova/sitemap.xml
+Sitemap: https://weldonkibiwot228-ux.github.io/LisheNova/sitemap.xml
